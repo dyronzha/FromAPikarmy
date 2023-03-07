@@ -5,15 +5,20 @@ using UnityEngine;
 
 namespace FromAPikarmy
 {
-    public partial class Tomoe : MonoBehaviour
-    {
-        [SerializeField] private float _flyMinSpeed;
+	public partial class Tomoe : MonoBehaviour
+	{
+		[SerializeField] private Transform _spriteTransform;
+		[SerializeField] private float _flyMinSpeed;
 		[SerializeField] private float _flyMaxSpeed;
 		[SerializeField] private float _flySlowSqrDist;
+		[SerializeField] private float _pickAreaSqrDist;
 		[SerializeField] private float _floatHeight;
 		[SerializeField] private Vector2 _floatSwitchTimeRange;
 		[SerializeField] private AnimationCurve _floatSpeed;
 
+		private TomoeManager _tomoeManager;
+
+		private Vector2 _spriteOffset;
 
 		private Vector2 _targtPos;
 		private Vector2 _flyDir;
@@ -28,9 +33,11 @@ namespace FromAPikarmy
 		private Action _flyState;
 		private Action _floatState;
 
-		public void Init()
+		public void Init(TomoeManager tomoeManager)
 		{
-			if(_flyState == null)
+			_tomoeManager = tomoeManager;
+			_spriteOffset = _spriteTransform.localPosition;
+			if (_flyState == null)
 			{
 				_flyState = OnFly;
 			}
@@ -38,14 +45,16 @@ namespace FromAPikarmy
 			{
 				_floatState = OnFloat;
 			}
-			_floatSwitchTime = UnityEngine.Random.Range(_floatSwitchTimeRange.x, _floatSwitchTimeRange.y);
 		}
 
-        public void StartFly(Vector2 startPos, Vector2 targetPos)
-		{	
+		public void StartFly(Vector2 startPos, Vector2 targetPos)
+		{
+			gameObject.SetActive(true);
+
 			_targtPos = targetPos;
 			_flyDir = (targetPos - startPos).normalized;
 			_flyDirRotattion = Quaternion.FromToRotation(Vector2.up, _flyDir);
+			_floatSwitchTime = UnityEngine.Random.Range(_floatSwitchTimeRange.x, _floatSwitchTimeRange.y);
 
 			transform.position = startPos;
 			transform.rotation = _flyDirRotattion;
@@ -79,7 +88,9 @@ namespace FromAPikarmy
 			{
 				transform.rotation = Quaternion.identity;
 				transform.position = _targtPos;
-				StartFloat(_targtPos, new Vector3(_targtPos.x, _targtPos.y + _floatHeight, 0));
+
+				var spritePos = _spriteTransform.position;
+				StartFloat(spritePos, new Vector3(spritePos.x, spritePos.y + _floatHeight, 0));
 			}
 		}
 
@@ -99,11 +110,24 @@ namespace FromAPikarmy
 		private void OnFloat()
 		{
 			_floatTime =  Mathf.Clamp(_floatTime + Time.deltaTime, 0, _floatSwitchTime);
-			transform.position = Vector3.Lerp(_floatFromPos, _floatToPos, _floatSpeed.Evaluate(_floatTime / _floatSwitchTime));
+			_spriteTransform.position = Vector3.Lerp(_floatFromPos, _floatToPos, _floatSpeed.Evaluate(_floatTime / _floatSwitchTime));
 			if (_floatTime >= _floatSwitchTime)
 			{
 				SetFloat(_floatToPos, _floatFromPos);
 			}
+			CheckPicked();
+		}
+
+		private void CheckPicked()
+		{
+			Vector2 diff = _tomoeManager.PickerPos - transform.position;
+			var sqrDist = diff.sqrMagnitude;
+			if (sqrDist <= _pickAreaSqrDist)
+			{
+				_tomoeManager.PickTomoe(this);
+				_spriteTransform.localPosition = _spriteOffset;
+			}
+			Debug.Log($"check pick dist {sqrDist}");
 		}
 	}
 }

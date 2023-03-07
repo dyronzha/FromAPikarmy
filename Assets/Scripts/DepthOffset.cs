@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class DepthOffset : MonoBehaviour
 {
-    public enum DepthType
+	public enum DepthType
 	{
-        Ground = -200,
-        Normal = 0,
-        Top = 200,
+		Ground = -200,
+		Normal = 0,
+		Top = 200,
 	}
 
-    [SerializeField] private DepthType _depthType;
+	[SerializeField] private DepthType _depthType;
 
 	private void LateUpdate()
 	{

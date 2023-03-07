@@ -471,4 +471,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9787483d051556a4983db2e8775c1ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxUsedCount: 3
   _tomoePrefab: {fileID: 8348925073365280057, guid: 7ec74c2dd184f43479d5a82a48449c45, type: 3}
+  _player: {fileID: 1153096225}

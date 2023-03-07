@@ -44,9 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8588ce1eba650c146b9f69d1e875dd1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spriteTransform: {fileID: 307183007974729358}
   _flyMinSpeed: 2
   _flyMaxSpeed: 16
   _flySlowSqrDist: 0.4
+  _pickAreaSqrDist: 0.2
   _floatHeight: 0.4
   _floatSwitchTimeRange: {x: 0.8, y: 1.2}
   _floatSpeed:
@@ -93,7 +95,7 @@ GameObject:
   - component: {fileID: 307183007974729358}
   - component: {fileID: 8930712519454102709}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

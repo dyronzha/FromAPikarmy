@@ -12,17 +12,19 @@ namespace FromAPikarmy
 
 	public class Player : MonoBehaviour
 	{
-		public Vector3 Position { get; private set; }
+		
 
 		[SerializeField] private float _moveSpeed;
 		[SerializeField] private SpriteRenderer _sprite;
 		[SerializeField] private TomoeManager _tomoeManager;
 
-		Vector3 _size;
+		private Vector3 _size;
 		private PlayerInputModule _inputModule;
 		private PlayerState _currentState;
 		private PlayerNormalState _normalState;
 		private PlayerBulletTimeState _bulletTimeState;
+
+		public Vector3 Position { get; private set; }
 
 		private void Awake()
 		{
