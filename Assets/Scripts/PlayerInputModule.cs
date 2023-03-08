@@ -17,7 +17,7 @@ namespace FromAPikarmy
 
 		public Vector2 GetMousePos() => Input.mousePosition;
 		public bool TriggerShoot() => Input.GetMouseButtonDown(0);
-		public bool TriggerDash() => Input.GetMouseButtonDown(1);
+		public bool TriggerInstantDash() => Input.GetMouseButtonDown(1);
 
 
 		public Vector2 GetShootTargetPos()

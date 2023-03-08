@@ -14,9 +14,9 @@ namespace FromAPikarmy
 		private Stack<Tomoe> _tomoePool = new Stack<Tomoe>();
 		private List<Tomoe> _usedTomoes;
 
+		public int UsedCount => _usedTomoes != null ? _usedTomoes.Count : 0;
 		public Vector3 PickerPos => _player != null ? _player.Position : Vector3.zero;
-
-		private int UsedCount => _usedTomoes != null ? _usedTomoes.Count : 0;
+		
 
 		public void ShootTomoe(Vector2 startPos, Vector2 endPos)
 		{
@@ -31,6 +31,13 @@ namespace FromAPikarmy
 		public void PickTomoe(Tomoe tomoe)
 		{
 			RecycleTomoe(tomoe);
+		}
+
+		public bool TryGetLastShootTomoe(out Tomoe tomoe)
+		{
+			bool hasLast = UsedCount > 0;
+			tomoe = (hasLast) ? _usedTomoes[0] : null;
+			return hasLast;
 		}
 
 		private Tomoe SpawnTomoe()
@@ -56,6 +63,7 @@ namespace FromAPikarmy
 
 		private void RecycleTomoe(Tomoe tomoe)
 		{
+			tomoe.Reset();
 			tomoe.gameObject.SetActive(false);
 			_usedTomoes.Remove(tomoe);
 			_tomoePool.Push(tomoe);

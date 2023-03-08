@@ -65,11 +65,7 @@ namespace FromAPikarmy
 		{
 			_currentState.Update();
 
-			if (DoingDash())
-			{
-				Dash();
-			}
-			else
+			if (!DoingDash())
 			{
 				Move();
 				Shoot();
@@ -80,12 +76,13 @@ namespace FromAPikarmy
 
 		private bool DoingDash()
 		{
-			return _inputModule.TriggerDash();
-		}
-
-		private void Dash()
-		{
-			
+			if (_inputModule.TriggerInstantDash() && _tomoeManager.TryGetLastShootTomoe(out var tomoe))
+			{
+				Position = new Vector3(tomoe.Position.x, tomoe.Position.y, Position.z);
+				_tomoeManager.PickTomoe(tomoe);
+				return true;
+			}
+			return false;
 		}
 
 		private void Move()

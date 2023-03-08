@@ -33,6 +33,8 @@ namespace FromAPikarmy
 		private Action _flyState;
 		private Action _floatState;
 
+		public Vector3 Position { get; private set; }
+
 		public void Init(TomoeManager tomoeManager)
 		{
 			_tomoeManager = tomoeManager;
@@ -47,6 +49,12 @@ namespace FromAPikarmy
 			}
 		}
 
+		public void Reset()
+		{
+			_currentState = null;
+			_spriteTransform.localPosition = _spriteOffset;
+		}
+
 		public void StartFly(Vector2 startPos, Vector2 targetPos)
 		{
 			gameObject.SetActive(true);
@@ -57,7 +65,7 @@ namespace FromAPikarmy
 			_floatSwitchTime = UnityEngine.Random.Range(_floatSwitchTimeRange.x, _floatSwitchTimeRange.y);
 
 			transform.position = startPos;
-			transform.rotation = _flyDirRotattion;
+			_spriteTransform.rotation = _flyDirRotattion;
 
 			_currentState = _flyState;
 		}
@@ -65,6 +73,7 @@ namespace FromAPikarmy
 		private void Update()
 		{
 			_currentState?.Invoke();
+			Position = transform.position;
 		}
 
 		private void OnFly()
@@ -80,13 +89,13 @@ namespace FromAPikarmy
 				{
 					var t = diffSqrDist / _flySlowSqrDist;
 					flySpeed = Mathf.Lerp(_flyMinSpeed, _flyMaxSpeed, t);
-					transform.rotation = Quaternion.Lerp(Quaternion.identity, _flyDirRotattion, t);
+					_spriteTransform.rotation = Quaternion.Lerp(Quaternion.identity, _flyDirRotattion, t);
 				}
 				transform.position += Time.deltaTime * flySpeed * new Vector3(_flyDir.x, _flyDir.y, 0);
 			}
 			else
 			{
-				transform.rotation = Quaternion.identity;
+				_spriteTransform.rotation = Quaternion.identity;
 				transform.position = _targtPos;
 
 				var spritePos = _spriteTransform.position;
@@ -125,9 +134,7 @@ namespace FromAPikarmy
 			if (sqrDist <= _pickAreaSqrDist)
 			{
 				_tomoeManager.PickTomoe(this);
-				_spriteTransform.localPosition = _spriteOffset;
 			}
-			Debug.Log($"check pick dist {sqrDist}");
 		}
 	}
 }
