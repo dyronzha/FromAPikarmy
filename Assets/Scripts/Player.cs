@@ -17,6 +17,8 @@ namespace FromAPikarmy
 		[SerializeField] private float _moveSpeed;
 		[SerializeField] private SpriteRenderer _sprite;
 		[SerializeField] private TomoeManager _tomoeManager;
+		[SerializeField] private CameraFollower _cameraFollower;
+		[SerializeField] private LineRenderer _dashHint;
 
 		private Vector3 _size;
 		private PlayerInputModule _inputModule;
@@ -76,13 +78,24 @@ namespace FromAPikarmy
 
 		private bool DoingDash()
 		{
-			if (_inputModule.TriggerInstantDash() && _tomoeManager.TryGetLastShootTomoe(out var tomoe))
+			if (!_tomoeManager.TryGetLastShootTomoeInView(out var tomoe))
 			{
-				Position = new Vector3(tomoe.Position.x, tomoe.Position.y, Position.z);
-				_tomoeManager.PickTomoe(tomoe);
-				return true;
+				_dashHint.enabled = false;
+				return false;
 			}
-			return false;
+			
+			if (!_inputModule.TriggerInstantDash())
+			{
+				_dashHint.enabled = true;
+				_dashHint.SetPositions(new Vector3[] { Position, tomoe.Position});
+				return false;
+			}
+
+			_dashHint.enabled = false;
+			Position = new Vector3(tomoe.Position.x, tomoe.Position.y, Position.z);
+			_tomoeManager.PickTomoe(tomoe);
+			_cameraFollower.DisableFollow();
+			return true;
 		}
 
 		private void Move()

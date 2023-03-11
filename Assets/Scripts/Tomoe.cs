@@ -8,10 +8,11 @@ namespace FromAPikarmy
 	public partial class Tomoe : MonoBehaviour
 	{
 		[SerializeField] private Transform _spriteTransform;
+		[SerializeField] private BoxCollider2D _spriteCollider;
 		[SerializeField] private float _flyMinSpeed;
 		[SerializeField] private float _flyMaxSpeed;
-		[SerializeField] private float _flySlowSqrDist;
-		[SerializeField] private float _pickAreaSqrDist;
+		[SerializeField] private float _flySlowDist;
+		[SerializeField] private float _pickAreaDist;
 		[SerializeField] private float _floatHeight;
 		[SerializeField] private Vector2 _floatSwitchTimeRange;
 		[SerializeField] private AnimationCurve _floatSpeed;
@@ -33,10 +34,15 @@ namespace FromAPikarmy
 		private Action _flyState;
 		private Action _floatState;
 
+		public Bounds Bounds => _spriteCollider.bounds;
 		public Vector3 Position { get; private set; }
 
 		public void Init(TomoeManager tomoeManager)
 		{
+			_floatSwitchTime = 1 / _floatSwitchTime;
+			_flySlowDist = _flySlowDist * _flySlowDist;
+			_pickAreaDist = _pickAreaDist * _pickAreaDist;
+
 			_tomoeManager = tomoeManager;
 			_spriteOffset = _spriteTransform.localPosition;
 			if (_flyState == null)
@@ -85,9 +91,9 @@ namespace FromAPikarmy
 			var diffSqrDist = diffVector.sqrMagnitude;
 			if (Vector2.Dot(_flyDir, diffVector) > 0)
 			{
-				if (diffSqrDist < _flySlowSqrDist)
+				if (diffSqrDist < _flySlowDist)
 				{
-					var t = diffSqrDist / _flySlowSqrDist;
+					var t = diffSqrDist / _flySlowDist;
 					flySpeed = Mathf.Lerp(_flyMinSpeed, _flyMaxSpeed, t);
 					_spriteTransform.rotation = Quaternion.Lerp(Quaternion.identity, _flyDirRotattion, t);
 				}
@@ -98,7 +104,7 @@ namespace FromAPikarmy
 				_spriteTransform.rotation = Quaternion.identity;
 				transform.position = _targtPos;
 
-				var spritePos = _spriteTransform.position;
+				var spritePos = _spriteTransform.localPosition;
 				StartFloat(spritePos, new Vector3(spritePos.x, spritePos.y + _floatHeight, 0));
 			}
 		}
@@ -119,7 +125,7 @@ namespace FromAPikarmy
 		private void OnFloat()
 		{
 			_floatTime =  Mathf.Clamp(_floatTime + Time.deltaTime, 0, _floatSwitchTime);
-			_spriteTransform.position = Vector3.Lerp(_floatFromPos, _floatToPos, _floatSpeed.Evaluate(_floatTime / _floatSwitchTime));
+			_spriteTransform.localPosition = Vector3.Lerp(_floatFromPos, _floatToPos, _floatSpeed.Evaluate(_floatTime * _floatSwitchTime));
 			if (_floatTime >= _floatSwitchTime)
 			{
 				SetFloat(_floatToPos, _floatFromPos);
@@ -131,7 +137,7 @@ namespace FromAPikarmy
 		{
 			Vector2 diff = _tomoeManager.PickerPos - transform.position;
 			var sqrDist = diff.sqrMagnitude;
-			if (sqrDist <= _pickAreaSqrDist)
+			if (sqrDist <= _pickAreaDist)
 			{
 				_tomoeManager.PickTomoe(this);
 			}

@@ -92,7 +92,8 @@ GameObject:
   m_Component:
   - component: {fileID: 870402010035032600}
   - component: {fileID: 2490587199914171738}
-  m_Layer: 0
+  - component: {fileID: 5286009193568444880}
+  m_Layer: 7
   m_Name: Tomoe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,11 +128,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8588ce1eba650c146b9f69d1e875dd1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  r: {fileID: 8930712519454102709}
   _spriteTransform: {fileID: 307183007974729358}
+  _spriteCollider: {fileID: 5286009193568444880}
   _flyMinSpeed: 2
   _flyMaxSpeed: 16
-  _flySlowSqrDist: 0.4
-  _pickAreaSqrDist: 0.2
+  _flySlowDist: 0.6
+  _pickAreaDist: 0.4
   _floatHeight: 0.2
   _floatSwitchTimeRange: {x: 0.8, y: 1.2}
   _floatSpeed:
@@ -167,6 +170,32 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!61 &5286009193568444880
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8348925073365280057}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0024260432, y: 0.26212716}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.33526048, y: 0.89833164}
+  m_EdgeRadius: 0
 --- !u!1 &8930331933604169891
 GameObject:
   m_ObjectHideFlags: 0
