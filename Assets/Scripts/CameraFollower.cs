@@ -57,7 +57,6 @@ public class CameraFollower : MonoBehaviour
 		}
 		else
 		{
-			_followTimer = 0f;
 			transform.position = _targetPos;
 			_currentState = _instantState;
 		}

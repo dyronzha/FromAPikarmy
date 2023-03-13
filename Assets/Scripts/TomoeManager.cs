@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,18 +13,17 @@ namespace FromAPikarmy
 
 		private Stack<Tomoe> _tomoePool = new Stack<Tomoe>();
 		private List<Tomoe> _usedTomoes = new List<Tomoe>();
+		private List<Tomoe> _inViewTomoes = new List<Tomoe>();
+		private List<Tomoe> _outViewTomoes = new List<Tomoe>();
 
 		public int UsedCount => _usedTomoes != null ? _usedTomoes.Count : 0;
 		public Vector3 PickerPos => _player != null ? _player.Position : Vector3.zero;
-		public IReadOnlyList<Tomoe> _existTomoes => _usedTomoes;
+		public IReadOnlyList<Tomoe> ExistTomoes => _usedTomoes;
+		public IReadOnlyList<Tomoe> InViewTomoes => _inViewTomoes;
+		public IReadOnlyList<Tomoe> OutViewTomoes => _outViewTomoes;
 		
-
 		public void ShootTomoe(Vector2 startPos, Vector2 endPos)
 		{
-			if (UsedCount >= _maxUsedCount)
-			{
-				return;
-			}
 			var tomoe = SpawnTomoe();
 			tomoe.StartFly(startPos, endPos);
 		}
@@ -49,12 +47,17 @@ namespace FromAPikarmy
 			return false;
 		}
 
+		public IEnumerable<Tomoe> GetTomoesInView()
+		{
+			return _usedTomoes.Where(x => IsTomoeInView(x));
+		}
+
 		private Tomoe SpawnTomoe()
 		{
 			Tomoe tomoe = null;
 			if (_tomoePool.Count == 0)
 			{
-				tomoe = Instantiate(_tomoePrefab).GetComponent<Tomoe>();
+				tomoe = Instantiate(_tomoePrefab, transform).GetComponent<Tomoe>();
 				tomoe.Init(this);
 			}
 			else
@@ -82,6 +85,23 @@ namespace FromAPikarmy
 			}
 			Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_mainCamera);
 			return GeometryUtility.TestPlanesAABB(planes, tomoe.Bounds);
+		}
+
+		private void LateUpdate()
+		{
+			_inViewTomoes.Clear();
+			_outViewTomoes.Clear();
+			foreach (var tomoe in _usedTomoes)
+			{
+				if (IsTomoeInView(tomoe))
+				{
+					_inViewTomoes.Add(tomoe);
+				}
+				else
+				{
+					_outViewTomoes.Add(tomoe);
+				}
+			}
 		}
 	}
 }
