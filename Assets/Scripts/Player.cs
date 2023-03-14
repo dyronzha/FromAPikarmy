@@ -13,14 +13,13 @@ namespace FromAPikarmy
 
 	public class Player : MonoBehaviour
 	{
-		
-
 		[SerializeField] private float _moveSpeed;
 		[SerializeField] private SpriteRenderer _sprite;
+		[SerializeField] private BoundaryManager _boundaryManager;
 		[SerializeField] private TomoeManager _tomoeManager;
-		[SerializeField] private CameraFollower _cameraFollower;
 		[SerializeField] private LineRenderer _dashHint;
 		[SerializeField] private DashEffectManager _dashEffectManager;
+		
 
 		private int _tomoeCount = 3;
 		private Vector3 _size;
@@ -133,15 +132,14 @@ namespace FromAPikarmy
 			var nextPosition = new Vector3(tomoe.Position.x, tomoe.Position.y, Position.z);
 			_dashEffectManager.ShowDashEffect(Position, nextPosition);
 			_tomoeManager.PickTomoe(tomoe);
-			_cameraFollower.DisableFollow();
 			Position = nextPosition;
 			return true;
 		}
 
 		private void Move()
 		{
-			Vector3 moveDir = _inputModule.GetMoveVector();
-			Position += _moveSpeed * Time.deltaTime * moveDir;
+			Vector3 moveOffset = _moveSpeed * Time.deltaTime * _inputModule.GetMoveVector();
+			Position = _boundaryManager.ClampPosition(Position + moveOffset);
 		}
 
 		private void Shoot()
@@ -149,6 +147,7 @@ namespace FromAPikarmy
 			if (_tomoeManager.UsedCount < AvilableTomoeAmount && _inputModule.TriggerShoot())
 			{
 				var targetPos = _inputModule.GetShootTargetPos();
+				targetPos = _boundaryManager.ClampInAreaByDirection(Position, targetPos);
 				var directionOffset = 0.5f * _size.x * new Vector2(targetPos.x - Position.x, targetPos.y - Position.y).normalized;
 				var fromPos = Position + new Vector3(directionOffset.x, 0.5f * _size.y + directionOffset.y, 0);
 
