@@ -19,8 +19,9 @@ namespace FromAPikarmy
 		[SerializeField] private TomoeManager _tomoeManager;
 		[SerializeField] private LineRenderer _dashHint;
 		[SerializeField] private DashEffectManager _dashEffectManager;
-		
 
+		private int _waitUpdateDashCounter = 3;
+		private int _lastDashHintCount;
 		private int _tomoeCount = 3;
 		private Vector3 _size;
 		private Vector2[] _dashHitPoints = new Vector2[2];
@@ -82,53 +83,20 @@ namespace FromAPikarmy
 			UpdatePosition();
 		}
 
+		private void LateUpdate()
+		{
+			UpdateDashHint();
+		}
+
 		private bool DoingDash()
 		{
-			//if (!_tomoeManager.TryGetLastShootTomoeInView(out var tomoe))
-			//{
-			//	_dashHint.enabled = false;
-			//	return false;
-			//}
-
-			//if (!_inputModule.TriggerInstantDash())
-			//{
-			//	_dashHint.enabled = true;
-
-			//	_dashHitPoints[0] = Position;
-			//	_dashHitPoints[1] = tomoe.Position;
-			//	_dashHint.SetPositions(new Vector3[] { Position, tomoe.Position});
-			//	return false;
-			//}
-
-			int viewAmount = _tomoeManager.InViewTomoes.Count;
-			if (viewAmount == 0)
-			{
-				_dashHint.enabled = false;
-				return false;
-			}
-
-			_dashHint.enabled = true;
-			_dashHint.SetPosition(0, Position);
-
-			var tomoe = _tomoeManager.InViewTomoes[0];
-			int restAmount = AvilableTomoeAmount - viewAmount;
-			for (int i = 1; i <= AvilableTomoeAmount; i++)
-			{
-				if (i <= restAmount)
-				{
-					_dashHint.SetPosition(i, Position);
-				}
-				else
-				{
-					_dashHint.SetPosition(i, _tomoeManager.InViewTomoes[i - restAmount - 1].Position);
-				}
-			}
-
-			if (!_inputModule.TriggerInstantDash())
+			var tomoeCount = _tomoeManager.UsedTomoes.Count;
+			if (!_inputModule.TriggerInstantDash() || tomoeCount == 0)
 			{
 				return false;
 			}
 
+			var tomoe = _tomoeManager.UsedTomoes[0];
 			var nextPosition = new Vector3(tomoe.Position.x, tomoe.Position.y, Position.z);
 			_dashEffectManager.ShowDashEffect(Position, nextPosition);
 			_tomoeManager.PickTomoe(tomoe);
@@ -147,7 +115,8 @@ namespace FromAPikarmy
 			if (_tomoeManager.UsedCount < AvilableTomoeAmount && _inputModule.TriggerShoot())
 			{
 				var targetPos = _inputModule.GetShootTargetPos();
-				targetPos = _boundaryManager.ClampInAreaByDirection(Position, targetPos);
+				targetPos = _boundaryManager.ClampPosition(targetPos);
+				//targetPos = _boundaryManager.ClampInAreaByDirection(Position, targetPos);
 				var directionOffset = 0.5f * _size.x * new Vector2(targetPos.x - Position.x, targetPos.y - Position.y).normalized;
 				var fromPos = Position + new Vector3(directionOffset.x, 0.5f * _size.y + directionOffset.y, 0);
 
@@ -159,6 +128,35 @@ namespace FromAPikarmy
 		private void UpdatePosition()
 		{
 			transform.position = Position;
+		}
+
+		private void UpdateDashHint()
+		{
+			if (_tomoeManager.UsedTomoes.Count == 0)
+			{
+				_dashHint.positionCount = 0;
+				return;
+			}
+
+			int tomoeCount = _tomoeManager.UsedTomoes.Count;
+			_dashHint.positionCount = tomoeCount + 1;
+			_dashHint.SetPosition(0, Position);
+			for (int i = 0; i < tomoeCount; i++)
+			{
+				_dashHint.SetPosition(i + 1, _tomoeManager.UsedTomoes[i].Position);
+			}
+
+			if (_waitUpdateDashCounter < 2)
+			{
+				_dashHint.enabled = true;
+				_waitUpdateDashCounter++;
+			}
+			else if (_lastDashHintCount < tomoeCount)
+			{
+				_dashHint.enabled = false;
+				_waitUpdateDashCounter = 0;
+			}
+			_lastDashHintCount = tomoeCount;
 		}
 	}
 }

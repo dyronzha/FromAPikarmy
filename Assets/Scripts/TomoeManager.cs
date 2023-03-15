@@ -18,7 +18,7 @@ namespace FromAPikarmy
 
 		public int UsedCount => _usedTomoes != null ? _usedTomoes.Count : 0;
 		public Vector3 PickerPos => _player != null ? _player.Position : Vector3.zero;
-		public IReadOnlyList<Tomoe> ExistTomoes => _usedTomoes;
+		public IReadOnlyList<Tomoe> UsedTomoes => _usedTomoes;
 		public IReadOnlyList<Tomoe> InViewTomoes => _inViewTomoes;
 		public IReadOnlyList<Tomoe> OutViewTomoes => _outViewTomoes;
 		
