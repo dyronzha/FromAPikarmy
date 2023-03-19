@@ -15,23 +15,37 @@ namespace FromAPikarmy
 
 		#region Mouse
 
-		public Vector2 GetMousePos() => Input.mousePosition;
-		public bool TriggerShoot() => Input.GetMouseButtonDown(0);
-		public bool TriggerInstantDash() => Input.GetMouseButtonDown(1);
-
-
-		public Vector2 GetShootTargetPos()
-		{
-			return _mainCamera.ScreenToWorldPoint(Input.mousePosition);
-		}
-
-
+		public bool TriggerShoot { get; private set; }
+		public bool TriggerInstantDash { get; private set; }
+		public Vector2 MousePosition { get; private set; }
+		public Vector2 ShootTargetPos { get; private set; }
 
 		#endregion
 
 		#region Keyboard
 
-		public Vector2 GetMoveVector()
+		public bool BulletTimeInput { get; private set; }
+		public Vector2 MoveDir { get; private set; }
+
+		#endregion
+
+		public void Update()
+		{
+			TriggerShoot = Input.GetMouseButtonDown(0);
+			TriggerInstantDash = Input.GetMouseButtonDown(1);
+			MousePosition = Input.mousePosition;
+			ShootTargetPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+			MoveDir = GetMoveVector();
+			BulletTimeInput = Input.GetKey(KeyCode.Space);
+		}
+
+		public void Clear()
+		{
+			TriggerShoot = default;
+			TriggerInstantDash = default;
+		}
+
+		private Vector2 GetMoveVector()
 		{
 			Vector2 moveDir = Vector2.zero;
 			if (Input.GetKey(KeyCode.W))
@@ -53,12 +67,6 @@ namespace FromAPikarmy
 			}
 			return moveDir.normalized;
 		}
-
-		public bool GetBulletTimeInput()
-		{
-			return Input.GetKey(KeyCode.Space);
-		}
-		#endregion
 	}
 
 }

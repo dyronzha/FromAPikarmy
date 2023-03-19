@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,18 +8,14 @@ namespace FromAPikarmy
 		[SerializeField] private int _maxUsedCount;
 		[SerializeField] private GameObject _tomoePrefab;
 		[SerializeField] private Player _player;
-		[SerializeField] private Camera _mainCamera;
 
 		private Stack<Tomoe> _tomoePool = new Stack<Tomoe>();
-		private List<Tomoe> _usedTomoes = new List<Tomoe>();
-		private List<Tomoe> _inViewTomoes = new List<Tomoe>();
-		private List<Tomoe> _outViewTomoes = new List<Tomoe>();
+		private List<Tomoe> _usingTomoes = new List<Tomoe>();
+		private List<Tomoe> _busyTomoes = new List<Tomoe>();
 
-		public int UsedCount => _usedTomoes != null ? _usedTomoes.Count : 0;
+		public int UsingCount => _usingTomoes.Count + _busyTomoes.Count;
 		public Vector3 PickerPos => _player != null ? _player.Position : Vector3.zero;
-		public IReadOnlyList<Tomoe> UsedTomoes => _usedTomoes;
-		public IReadOnlyList<Tomoe> InViewTomoes => _inViewTomoes;
-		public IReadOnlyList<Tomoe> OutViewTomoes => _outViewTomoes;
+		public IReadOnlyList<Tomoe> UsingTomoes => _usingTomoes;
 		
 		public void ShootTomoe(Vector2 startPos, Vector2 endPos)
 		{
@@ -28,28 +23,23 @@ namespace FromAPikarmy
 			tomoe.StartFly(startPos, endPos);
 		}
 
-		public void PickTomoe(Tomoe tomoe)
+		public void PickTomoe(bool isTomoeBusy, Tomoe tomoe)
 		{
-			RecycleTomoe(tomoe);
+			RecycleTomoe(isTomoeBusy, tomoe);
 		}
 
-		public bool TryGetLastShootTomoeInView(out Tomoe tomoe)
+		public void CheckEatDonut(Vector2 position)
 		{
-			foreach (var t in _usedTomoes)
+			foreach (var tomoe in _usingTomoes)
 			{
-				if (IsTomoeInView(t))
-				{
-					tomoe = t;
-					return true;
-				}
+				
 			}
-			tomoe = null;
-			return false;
 		}
 
-		public IEnumerable<Tomoe> GetTomoesInView()
+		public void SetTomoeOutBoundary(Tomoe tomoe)
 		{
-			return _usedTomoes.Where(x => IsTomoeInView(x));
+			_usingTomoes.Remove(tomoe);
+			_busyTomoes.Add(tomoe);
 		}
 
 		private Tomoe SpawnTomoe()
@@ -63,44 +53,25 @@ namespace FromAPikarmy
 			else
 			{
 				tomoe = _tomoePool.Pop();
+				tomoe.gameObject.SetActive(false);
 			}
 
-			_usedTomoes.Add(tomoe);
+			_usingTomoes.Add(tomoe);
 			return tomoe;
 		}
 
-		private void RecycleTomoe(Tomoe tomoe)
+		private void RecycleTomoe(bool isTomoeBusy, Tomoe tomoe)
 		{
 			tomoe.Reset();
 			tomoe.gameObject.SetActive(false);
-			_usedTomoes.Remove(tomoe);
 			_tomoePool.Push(tomoe);
-		}
-
-		private bool IsTomoeInView(Tomoe tomoe)
-		{
-			if (_mainCamera == null)
+			if (isTomoeBusy)
 			{
-				return false;
+				_busyTomoes.Remove(tomoe);
 			}
-			Plane[] planes = GeometryUtility.CalculateFrustumPlanes(_mainCamera);
-			return GeometryUtility.TestPlanesAABB(planes, tomoe.Bounds);
-		}
-
-		private void LateUpdate()
-		{
-			_inViewTomoes.Clear();
-			_outViewTomoes.Clear();
-			foreach (var tomoe in _usedTomoes)
+			else
 			{
-				if (IsTomoeInView(tomoe))
-				{
-					_inViewTomoes.Add(tomoe);
-				}
-				else
-				{
-					_outViewTomoes.Add(tomoe);
-				}
+				_usingTomoes.Remove(tomoe);
 			}
 		}
 	}

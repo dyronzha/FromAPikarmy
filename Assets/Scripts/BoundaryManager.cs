@@ -1,15 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace FromAPikarmy
 {
-    public class BoundaryManager : MonoBehaviour
-    {
-        [SerializeField] private BoxCollider2D _area;
+	public class BoundaryManager : MonoBehaviour
+	{
+		[SerializeField] private BoxCollider2D _area;
+		[SerializeField] private Vector2 _scrollingBounds;
 		[SerializeField] private Camera _mainCamera;
 
+		private static BoundaryManager _instance;
 		private Bounds _areaBounds;
+
+		public static BoundaryManager Instance
+		{
+			get
+			{
+				if (_instance == null)
+				{
+					_instance = GameObject.FindObjectOfType<BoundaryManager>();
+				}
+				return _instance;
+			}
+		}
+
+		public Vector2 MaxPoint => _area.bounds.max;
+		public Vector2 MinPoint => _area.bounds.min;
 
 		public Vector3 ClampPosition(Vector3 position)
 		{
@@ -17,6 +32,13 @@ namespace FromAPikarmy
 			float y = Mathf.Clamp(position.y, _areaBounds.min.y, _areaBounds.max.y);
 
 			return new Vector3(x, y, position.z);
+		}
+
+		public Vector3 ClampPositionY(Vector3 position)
+		{
+			float y = Mathf.Clamp(position.y, _areaBounds.min.y, _areaBounds.max.y);
+
+			return new Vector3(position.x, y, position.z);
 		}
 
 		public Vector2 ClampInAreaByDirection(Vector2 from, Vector2 to)
@@ -37,20 +59,20 @@ namespace FromAPikarmy
 			return to;
 		}
 
-		public bool CheckClickInArea(Vector2 point)
+		public bool CheckPositionInArea(Vector3 position)
 		{
-			var ray = _mainCamera.ScreenPointToRay(point);
-			return _areaBounds.IntersectRay(ray);
+			return _area.bounds.Contains(position);
 		}
 
-        public bool CheckPositionInArea(Vector3 position)
+		public bool CheckScrollingOut(float positionX)
 		{
-            return _area.bounds.Contains(position);
+			return positionX <= _scrollingBounds.x;
 		}
 
 		private void Awake()
 		{
 			//_area.enabled = false;
+			_instance = this;
 			_areaBounds = _area.bounds;
 		}
 	}

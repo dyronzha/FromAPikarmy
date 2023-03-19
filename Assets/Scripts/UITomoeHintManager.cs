@@ -28,11 +28,11 @@ namespace FromAPikarmy
 
 		private void UpdateHint()
 		{
-			foreach (var tomoe in _tomoeManager.OutViewTomoes)
-			{
-				Vector2 hintUIPos = _mainCamera.WorldToScreenPoint(tomoe.Position);
+			//foreach (var tomoe in _tomoeManager.OutViewTomoes)
+			//{
+			//	Vector2 hintUIPos = _mainCamera.WorldToScreenPoint(tomoe.Position);
 				
-			}
+			//}
 		}
 
 		private RectTransform SpawnHint()

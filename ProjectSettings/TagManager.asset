@@ -14,7 +14,7 @@ TagManager:
   - Player
   - Tomoe
   - Donut
-  - 
+  - Boundary
   - 
   - 
   - 
@@ -40,6 +40,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BG
+    uniqueID: 2230490251
     locked: 0
   - name: Ground
     uniqueID: 1204564671

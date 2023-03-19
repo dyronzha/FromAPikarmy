@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace FromAPikarmy
 {
@@ -29,15 +26,15 @@ namespace FromAPikarmy
 
 		protected void Move()
 		{
-			var moveDir = _inputModule.GetMoveVector();
+			var moveDir = _inputModule.MoveDir;
 
 		}
 
 		protected void Shoot()
 		{
-			if (_inputModule.TriggerShoot())
+			if (_inputModule.TriggerShoot)
 			{
-				var shootPos = _inputModule.GetShootTargetPos();
+				var shootPos = _inputModule.ShootTargetPos;
 			}
 		}
 
@@ -52,7 +49,7 @@ namespace FromAPikarmy
 
 		public override void Update()
 		{
-			if (_inputModule.GetBulletTimeInput())
+			if (_inputModule.BulletTimeInput)
 			{
 				OnChangeState(PlayerStateType.BulletTime);
 				return;
@@ -68,7 +65,7 @@ namespace FromAPikarmy
 
 		public override void Update()
 		{
-			if (!_inputModule.GetBulletTimeInput())
+			if (!_inputModule.BulletTimeInput)
 			{
 				OnChangeState(PlayerStateType.Normal);
 				return;

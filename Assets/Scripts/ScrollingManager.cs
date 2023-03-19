@@ -2,17 +2,53 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScrollingManager : MonoBehaviour
+namespace FromAPikarmy
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public class ScrollingManager : MonoBehaviour
+	{
+		[SerializeField] private int _scrollingSpeed;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+		public Vector3 ScrollVector => new Vector3(-Time.deltaTime * _scrollingSpeed, 0, 0);
+
+		private static ScrollingManager _instance;
+
+		public static ScrollingManager Instance
+		{
+			get
+			{
+				if (_instance == null)
+				{
+					_instance = GameObject.FindObjectOfType<ScrollingManager>();
+				}
+				return _instance;
+			}
+		}
+
+		private void Awake()
+		{
+			if (_instance == null)
+			{
+				_instance = this;
+			}
+		}
+
+		private void OnDestroy()
+		{
+			_instance = null;
+		}
+
+		// Start is called before the first frame update
+		void Start()
+		{
+
+		}
+
+		// Update is called once per frame
+		void Update()
+		{
+
+		}
+	}
 }
+
+
