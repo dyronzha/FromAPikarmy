@@ -34,11 +34,9 @@ namespace FromAPikarmy
 			return new Vector3(x, y, position.z);
 		}
 
-		public Vector3 ClampPositionY(Vector3 position)
+		public float ClampPositionY(float positionY)
 		{
-			float y = Mathf.Clamp(position.y, _areaBounds.min.y, _areaBounds.max.y);
-
-			return new Vector3(position.x, y, position.z);
+			return Mathf.Clamp(positionY, _areaBounds.min.y, _areaBounds.max.y);
 		}
 
 		public Vector2 ClampInAreaByDirection(Vector2 from, Vector2 to)

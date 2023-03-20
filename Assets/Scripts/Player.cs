@@ -25,14 +25,23 @@ namespace FromAPikarmy
 		private int _lastDashHintCount;
 		private int _tomoeCount = 3;
 		private Vector3 _size;
+		private Vector3 _position;
 		private Vector2[] _dashHitPoints = new Vector2[2];
 		private Bounds _eatArea;
 		private PlayerInputModule _inputModule;
 
 		public int AvilableTomoeAmount { get; private set; } = 3;
-		public Vector3 Position { get; private set; }
+		public Vector3 LastPosition { get; private set; }
+
+		public Vector3 Position => _position;
+		public Bounds EatArea => _eatArea;
 
 		private float DeltaTime => Time.deltaTime;
+
+		public void EatDonut()
+		{
+			Debug.Log($"eat donut");
+		}
 
 		private void Awake()
 		{
@@ -45,20 +54,22 @@ namespace FromAPikarmy
 			_size = _sprite.bounds.size;
 			_eatArea = new Bounds(_collider.bounds.center, _collider.size);
 			_collider.enabled = false;
-			Position = transform.position;
+			_position = transform.position;
 		}
 
 		private void Update()
 		{
-			Position = transform.position;
+			LastPosition = _position;
+			_position = transform.position;
+
 			_inputModule.Update();
 			if (!DoingDash())
 			{
 				Move();
 				Shoot();
 			}
-			DetectEatDonut();
-			UpdatePosition();
+
+			UpdateTransform();
 			UpdateDashHint();
 		}
 
@@ -71,18 +82,18 @@ namespace FromAPikarmy
 			}
 
 			var tomoe = _tomoeManager.UsingTomoes[0];
-			var nextPosition = new Vector3(tomoe.Position.x, tomoe.Position.y, Position.z);
-			_dashEffectManager.ShowDashEffect(Position, nextPosition);
+			var nextPosition = new Vector3(tomoe.Position.x, tomoe.Position.y, _position.z);
+			_dashEffectManager.ShowDashEffect(_position, nextPosition);
 
 			_tomoeManager.PickTomoe(false, tomoe);
-			Position = nextPosition;
+			_position = nextPosition;
 			return true;
 		}
 
 		private void Move()
 		{
 			Vector3 moveOffset = _moveSpeed * DeltaTime * _inputModule.MoveDir;
-			Position = BoundaryManager.Instance.ClampPosition(Position + moveOffset);
+			_position = BoundaryManager.Instance.ClampPosition(_position + moveOffset);
 		}
 
 		private void Shoot()
@@ -92,30 +103,18 @@ namespace FromAPikarmy
 				var targetPos = _inputModule.ShootTargetPos;
 				targetPos = BoundaryManager.Instance.ClampPosition(targetPos);
 				//targetPos = _boundaryManager.ClampInAreaByDirection(Position, targetPos);
-				var directionOffset = 0.5f * _size.x * new Vector2(targetPos.x - Position.x, targetPos.y - Position.y).normalized;
-				var fromPos = Position + new Vector3(directionOffset.x, 0.5f * _size.y + directionOffset.y, 0);
+				var directionOffset = 0.5f * _size.x * new Vector2(targetPos.x - _position.x, targetPos.y - _position.y).normalized;
+				var fromPos = _position + new Vector3(directionOffset.x, 0.5f * _size.y + directionOffset.y, 0);
 
 				_tomoeManager.ShootTomoe(fromPos, targetPos);
 
 			}
 		}
 
-		private void DetectEatDonut()
+		private void UpdateTransform()
 		{
-			foreach (var donut in _donutManager.UsedDonuts)
-			{
-				if (_eatArea.Intersects(donut.EatenArea))
-				{
-					_donutManager.CleanDonut(donut);
-				}
-				Debug.Log($"eatArea {_eatArea.center} / {_eatArea.size}");
-				Debug.Log($"eaten {donut.EatenArea.center} / {donut.EatenArea.size}");
-			}
-		}
-
-		private void UpdatePosition()
-		{
-			transform.position = Position;
+			transform.position = _position;
+			_eatArea.SetMinMax(_position - _eatArea.extents, _position + _eatArea.extents);	
 		}
 
 		private void UpdateDashHint()
@@ -128,7 +127,7 @@ namespace FromAPikarmy
 
 			int tomoeCount = _tomoeManager.UsingTomoes.Count;
 			_dashHint.positionCount = tomoeCount + 1;
-			_dashHint.SetPosition(0, Position);
+			_dashHint.SetPosition(0, _position);
 			for (int i = 0; i < tomoeCount; i++)
 			{
 				_dashHint.SetPosition(i + 1, _tomoeManager.UsingTomoes[i].Position);

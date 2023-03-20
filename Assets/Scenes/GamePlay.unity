@@ -616,7 +616,9 @@ MonoBehaviour:
   _maxImmediatelySpawmCount: 2
   _spawnRangeTime: {x: 0.4, y: 0.8}
   _spawnGapRangeTime: {x: 0.1, y: 0.4}
+  _spawnPosition: {x: 12, y: 0, z: 0}
   _donutPrefab: {fileID: 2788860711541200796, guid: e8e8f8a1713e0b24da5b9a20575974da, type: 3}
+  _player: {fileID: 1153096225}
 --- !u!4 &1423598020
 Transform:
   m_ObjectHideFlags: 0
@@ -920,6 +922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxUsedCount: 3
+  _spawnPosition: {x: 12, y: 0, z: 0}
   _tomoePrefab: {fileID: 8348925073365280057, guid: 7ec74c2dd184f43479d5a82a48449c45, type: 3}
   _player: {fileID: 1153096225}
 --- !u!1001 &436481136948640326

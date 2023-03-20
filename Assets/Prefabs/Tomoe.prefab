@@ -130,8 +130,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteTransform: {fileID: 307183007974729358}
   _collider: {fileID: 0}
-  _flyMinSpeed: 2
-  _flyMaxSpeed: 16
+  _flyMinSpeed: 5
+  _flyMaxSpeed: 20
   _flySlowDist: 0.6
   _pickAreaDist: 0.4
   _floatHeight: 0.2

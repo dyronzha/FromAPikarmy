@@ -13,16 +13,17 @@ namespace FromAPikarmy
 		[SerializeField] private Vector2 _rambleChangeDirRangeTime;
 		[SerializeField] private BoxCollider2D _collider;
 
-		private bool _hasInit;
-
 		private float _stateTimer;
 		private float _idleTime;
 		private float _rambleTime;
 		private float _rambleChangeDirTime;
 
+		private Vector3 _position;
 		private Vector3 _moveInDir;
 		private Vector3 _rambleDir;
 		private Vector3 _lastRambleDir;
+
+		public Bounds _eatenArea;
 
 		private Action _currentState;
 		private Action _moveInState;
@@ -32,18 +33,14 @@ namespace FromAPikarmy
 
 		private DonutManager _donutManager;
 
-		public Vector3 Position { get; private set; }
-		public Bounds EatenArea { get; private set; }
+		public Vector3 Position => _position;
+		public Bounds EatenArea => _eatenArea;
 
 		private float DeltaTime => Time.deltaTime;
 
 		public void Init(DonutManager donutManager)
 		{
-			if (_hasInit)
-			{
-				return;
-			}
-			EatenArea = new Bounds(_collider.bounds.center, _collider.bounds.size) ;
+			_eatenArea = new Bounds(_collider.bounds.center, _collider.bounds.size) ;
 			_collider.enabled = false;
 			_donutManager = donutManager;
 			_moveInState = OnMoveIn;
@@ -53,14 +50,14 @@ namespace FromAPikarmy
 
 		public void Reset()
 		{
-			gameObject.SetActive(false);
 			_currentState = null;
+			gameObject.SetActive(false);
 		}
 
 		public void SetSpawn()
 		{
-			gameObject.SetActive(true);
 			SetMoveIn();
+			gameObject.SetActive(true);
 		}
 
 		private void Update()
@@ -68,8 +65,9 @@ namespace FromAPikarmy
 			if (OnScrolling())
 			{
 				_currentState?.Invoke();
+				UpdateTransform();
+				_donutManager.DetectBeEaten(this);
 			}
-			UpdatePosition();
 		}
 
 		private void SetMoveIn()
@@ -78,24 +76,27 @@ namespace FromAPikarmy
 			_stateTimer = 0;
 			var startPosX = BoundaryManager.Instance.MaxPoint.x + _startOffset;
 			var startPosY = UnityEngine.Random.Range(BoundaryManager.Instance.MinPoint.y, BoundaryManager.Instance.MaxPoint.y);
-			Position = new Vector3(startPosX, startPosY, Position.z);
+			_position.Set(startPosX, startPosY, Position.z);
 
 			float dirY = UnityEngine.Random.Range(-1,1);
 			_moveInDir = new Vector2(-1, dirY).normalized;
+			_lastRambleDir = _moveInDir;
 		}
 
 		private void OnMoveIn()
-		{			
-			Position += _moveSpeed * DeltaTime * _moveInDir;
-			Position = BoundaryManager.Instance.ClampPositionY(Position);
-			if (BoundaryManager.Instance.CheckPositionInArea(Position))
+		{
+			_position += _moveSpeed * DeltaTime * _moveInDir;
+			_position.Set(_position.x, BoundaryManager.Instance.ClampPositionY(_position.y), _position.z);
+			if (BoundaryManager.Instance.CheckPositionInArea(_position))
 			{
+				Debug.Log($"end move in");
 				RandomIdleRamble();
 			}
 		}
 
 		private void SetIdle()
-		{	
+		{
+			Debug.Log($"set idle");
 			_stateTimer = 0;
 			_currentState = _idleState;
 			_idleTime = UnityEngine.Random.Range(_idleRangetime.x, _idleRangetime.y);	
@@ -112,7 +113,7 @@ namespace FromAPikarmy
 
 		private void RandomIdleRamble()
 		{
-			if (UnityEngine.Random.Range(0, 1) <= _rambleOpportunity)
+			if (UnityEngine.Random.Range(0, 1) - _rambleOpportunity < 0.001f)
 			{
 				SetRamble();
 			}
@@ -124,6 +125,7 @@ namespace FromAPikarmy
 
 		private void SetRamble()
 		{
+			Debug.Log($"set ");
 			_stateTimer = 0;
 			_currentState = _rambleState;
 			_rambleTime = UnityEngine.Random.Range(_rambleRangeTime.x, _rambleRangeTime.y);
@@ -154,14 +156,15 @@ namespace FromAPikarmy
 				}
 				_lastRambleDir = Vector3.RotateTowards(_lastRambleDir, _rambleDir, 10 * DeltaTime, 0).normalized;
 				//_lastRambleDir = Vector3.Lerp(_lastRambleDir, _rambleDir, Time.deltaTime);
-				Position += DeltaTime * _moveSpeed * _lastRambleDir;
-				Position = BoundaryManager.Instance.ClampPositionY(Position);
+				_position += DeltaTime * _moveSpeed * _lastRambleDir;
+				_position.Set(_position.x, BoundaryManager.Instance.ClampPositionY(_position.y), _position.z);
 			}
 		}
 
 		private bool OnScrolling()
 		{
-			if (BoundaryManager.Instance.CheckScrollingOut(Position.x))
+			_position += ScrollingManager.Instance.ScrollVector;
+			if (BoundaryManager.Instance.CheckScrollingOut(_position.x))
 			{
 				_donutManager.CleanDonut(this);
 				return false;
@@ -169,9 +172,10 @@ namespace FromAPikarmy
 			return true;
 		}
 
-		private void UpdatePosition()
+		private void UpdateTransform()
 		{
-			transform.position = Position;
+			transform.position = _position;
+			_eatenArea.SetMinMax(_position - EatenArea.extents, _position + EatenArea.extents);
 		}
 
 		private float RandomRange(float min, float max)

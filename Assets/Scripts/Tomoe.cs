@@ -28,6 +28,8 @@ namespace FromAPikarmy
 		private Vector2 _flyDir;
 		private Quaternion _flyDirRotattion;
 
+		private Vector3 _position;
+
 		private float _floatTime;
 		private float _floatSwitchTime;
 		private Vector3 _floatFromPos;
@@ -43,7 +45,7 @@ namespace FromAPikarmy
 
 		private bool _outBoundary;
 
-		public Vector3 Position { get; private set; }
+		public Vector3 Position => _position;
 
 		private float DeltaTime => Time.deltaTime;
 
@@ -75,34 +77,34 @@ namespace FromAPikarmy
 			_currentState = null;
 			_spriteTransform.localPosition = _spriteOffset;
 			_shadowRenderer.enabled = true;
+			gameObject.SetActive(false);
 		}
 
 		public void StartFly(Vector2 startPos, Vector2 targetPos)
 		{
-			gameObject.SetActive(true);
-
 			_targtPos = targetPos;
 			_flyDir = (targetPos - startPos).normalized;
 			_flyDirRotattion = Quaternion.FromToRotation(Vector2.up, _flyDir);
 			_floatSwitchTime = UnityEngine.Random.Range(_floatSwitchTimeRange.x, _floatSwitchTimeRange.y);
 
-			Position = startPos;
-			Debug.Log($"start fly position {Position}");
+			_position = startPos;
+			Debug.Log($"start fly position {_position}");
 			_spriteTransform.rotation = _flyDirRotattion;
-
 			_currentState = _flyState;
+
+			gameObject.SetActive(true);
 		}
 
 		private void Update()
 		{
 			_currentState?.Invoke();
-			transform.position = Position;
+			transform.position = _position;
 		}
 
 		private void OnFly()
 		{
-			Debug.Log($"Onfly position {Position}");
-			var diffVector = new Vector2(_targtPos.x - Position.x, _targtPos.y - Position.y);
+			Debug.Log($"Onfly position {_position}");
+			var diffVector = new Vector2(_targtPos.x - _position.x, _targtPos.y - _position.y);
 			var flySpeed = _flyMaxSpeed;
 
 			var diffSqrDist = diffVector.sqrMagnitude;
@@ -114,12 +116,12 @@ namespace FromAPikarmy
 					flySpeed = Mathf.Lerp(_flyMinSpeed, _flyMaxSpeed, t);
 					_spriteTransform.rotation = Quaternion.Lerp(Quaternion.identity, _flyDirRotattion, t);
 				}
-				Position += DeltaTime * flySpeed * new Vector3(_flyDir.x, _flyDir.y, 0);
+				_position += DeltaTime * flySpeed * new Vector3(_flyDir.x, _flyDir.y, 0);
 			}
 			else
 			{
 				_spriteTransform.rotation = Quaternion.identity;
-				Position = _targtPos;
+				_position = _targtPos;
 
 				var spritePos = _spriteTransform.localPosition;
 				StartFloat(spritePos, new Vector3(spritePos.x, spritePos.y + _floatHeight, 0));
@@ -156,7 +158,7 @@ namespace FromAPikarmy
 
 		private bool CheckPicked()
 		{
-			Vector2 diff = _tomoeManager.PickerPos - Position;
+			Vector2 diff = _tomoeManager.PickerPos - _position;
 			var sqrDist = diff.sqrMagnitude;
 			if (sqrDist <= _pickAreaDist)
 			{
@@ -168,8 +170,8 @@ namespace FromAPikarmy
 
 		private void OnScrolling()
 		{
-			Position += ScrollingManager.Instance.ScrollVector;
-			if (BoundaryManager.Instance.CheckScrollingOut(Position.x))
+			_position += ScrollingManager.Instance.ScrollVector;
+			if (BoundaryManager.Instance.CheckScrollingOut(_position.x))
 			{
 				_tomoeManager.SetTomoeOutBoundary(this);
 				_outBoundary = true;
@@ -183,7 +185,7 @@ namespace FromAPikarmy
 			_chaseWaitTimer = 0f;
 			_chaseWaitSpeed = UnityEngine.Random.Range(_chaseWaitSpeedRange.x, _chaseWaitSpeedRange.y);
 			_spriteTransform.rotation = Quaternion.FromToRotation(Vector2.up, Vector2.right);
-			Position = new Vector3(_chaseStartPosX, UnityEngine.Random.Range(_chaseStartHeightRange.x, _chaseStartHeightRange.y), 0);
+			_position.Set(_chaseStartPosX, UnityEngine.Random.Range(_chaseStartHeightRange.x, _chaseStartHeightRange.y), 0);
 			_shadowRenderer.enabled = false;
 		}
 
@@ -195,13 +197,13 @@ namespace FromAPikarmy
 			}
 			if (_chaseWaitTimer < _chaseWaitTime)
 			{
-				float x = Mathf.Lerp(Position.x, _tomoeManager.PickerPos.x, _chaseWaitSpeed * DeltaTime);
-				Position = new Vector3(x, Position.y, Position.z);
+				float x = Mathf.Lerp(_position.x, _tomoeManager.PickerPos.x, _chaseWaitSpeed * DeltaTime);
+				_position.Set(x, _position.y, _position.z);
 			}
 			else
 			{
-				var pos = Vector2.Lerp(Position, _tomoeManager.PickerPos, 0.5f * (_chaseWaitTimer - _chaseWaitTime));
-				Position = new Vector3(pos.x, pos.y, Position.z);
+				var pos = Vector2.Lerp(_position, _tomoeManager.PickerPos, 0.5f * (_chaseWaitTimer - _chaseWaitTime));
+				_position.Set(pos.x, pos.y, _position.z);
 			}
 			_chaseWaitTimer += DeltaTime;
 		}

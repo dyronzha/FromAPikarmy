@@ -10,7 +10,9 @@ namespace FromAPikarmy
 		[SerializeField] private int _maxImmediatelySpawmCount;
 		[SerializeField] private Vector2 _spawnRangeTime;
 		[SerializeField] private Vector2 _spawnGapRangeTime;
+		[SerializeField] private Vector3 _spawnPosition;
 		[SerializeField] private GameObject _donutPrefab;
+		[SerializeField] private Player _player;
 
 		private float _spawnTimer;
 		private float _spawnGapTimer;
@@ -26,6 +28,25 @@ namespace FromAPikarmy
 		public void CleanDonut(Donut donut)
 		{
 			RecycleDonut(donut);
+		}
+
+		public bool DetectBeEaten(Donut donut)
+		{
+			var eatenArea = donut.EatenArea;
+			if (!eatenArea.Intersects(_player.EatArea))
+			{
+				var playerPos = _player.Position;
+				var diff = playerPos - _player.LastPosition;
+				Ray ray = new Ray(playerPos, diff.normalized);
+				if(!(eatenArea.IntersectRay(ray, out float distance) && distance * distance <= diff.sqrMagnitude))
+				{
+					return false;
+				}
+			}
+
+			RecycleDonut(donut);
+			_player.EatDonut();
+			return true;
 		}
 
 		private void Awake()
@@ -77,14 +98,13 @@ namespace FromAPikarmy
 			Donut donut = null;
 			if (_donutPool.Count == 0)
 			{
-				donut = Instantiate(_donutPrefab, transform).GetComponent<Donut>();
+				donut = Instantiate(_donutPrefab, _spawnPosition, Quaternion.identity, transform).GetComponent<Donut>();
 				donut.Init(this);
 			}
 			else
 			{
 				donut = _donutPool.Pop();
 			}
-
 			_usedDonuts.Add(donut);
 			return donut;
 		}
@@ -94,6 +114,8 @@ namespace FromAPikarmy
 			_usedDonuts.Remove(donut);
 			_donutPool.Push(donut);
 			donut.Reset();
+			donut.transform.position = _spawnPosition;
+			donut.gameObject.SetActive(false);
 		}
 	}
 }
