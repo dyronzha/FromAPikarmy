@@ -114,7 +114,9 @@ namespace FromAPikarmy
 		private void UpdateTransform()
 		{
 			transform.position = _position;
-			_eatArea.SetMinMax(_position - _eatArea.extents, _position + _eatArea.extents);	
+			Vector2 min = new Vector2(_position.x - _eatArea.extents.x, _position.y - _eatArea.extents.y);
+			Vector2 max = new Vector2(_position.x + _eatArea.extents.x, _position.y + _eatArea.extents.y);
+			_eatArea.SetMinMax(min, max);	
 		}
 
 		private void UpdateDashHint()

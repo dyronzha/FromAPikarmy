@@ -51,6 +51,7 @@ namespace FromAPikarmy
 		public void Reset()
 		{
 			_currentState = null;
+			transform.rotation = Quaternion.identity;
 			gameObject.SetActive(false);
 		}
 
@@ -66,7 +67,10 @@ namespace FromAPikarmy
 			{
 				_currentState?.Invoke();
 				UpdateTransform();
-				_donutManager.DetectBeEaten(this);
+				if (_donutManager.DetectBeEaten(this))
+				{
+					SetEaten();
+				}
 			}
 		}
 
@@ -125,7 +129,6 @@ namespace FromAPikarmy
 
 		private void SetRamble()
 		{
-			Debug.Log($"set ");
 			_stateTimer = 0;
 			_currentState = _rambleState;
 			_rambleTime = UnityEngine.Random.Range(_rambleRangeTime.x, _rambleRangeTime.y);
@@ -175,12 +178,15 @@ namespace FromAPikarmy
 		private void UpdateTransform()
 		{
 			transform.position = _position;
-			_eatenArea.SetMinMax(_position - EatenArea.extents, _position + EatenArea.extents);
+			Vector2 min = new Vector2(_position.x - _eatenArea.extents.x, _position.y - _eatenArea.extents.y);
+			Vector2 max = new Vector2(_position.x + _eatenArea.extents.x, _position.y + _eatenArea.extents.y);
+			_eatenArea.SetMinMax(min, max);
 		}
 
-		private float RandomRange(float min, float max)
+		public void SetEaten()
 		{
-			return UnityEngine.Random.Range(_rambleRangeTime.x, _rambleRangeTime.y);
+			_currentState = null;
+			transform.rotation = Quaternion.Euler(0,0,90);
 		}
 	}
 }

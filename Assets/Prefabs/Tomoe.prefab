@@ -92,6 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 870402010035032600}
   - component: {fileID: 2490587199914171738}
+  - component: {fileID: 4122831731915046772}
   - component: {fileID: 5286009193568444880}
   m_Layer: 7
   m_Name: Tomoe
@@ -174,6 +175,19 @@ MonoBehaviour:
   _chaseWaitTime: 2
   _chaseWaitSpeedRange: {x: 0.4, y: 0.8}
   _shadowRenderer: {fileID: 2678560668106122811}
+--- !u!114 &4122831731915046772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8348925073365280057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b88bce4bebaf82f4fadbe53a13429217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _depthType: 0
 --- !u!61 &5286009193568444880
 BoxCollider2D:
   m_ObjectHideFlags: 0

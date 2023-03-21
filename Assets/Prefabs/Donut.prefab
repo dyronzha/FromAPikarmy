@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2788860711541200799}
   - component: {fileID: 2788860711541200798}
+  - component: {fileID: 2706196494441424280}
   - component: {fileID: 2788860711541200797}
   m_Layer: 8
   m_Name: Donut
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startOffset: 4
-  _moveSpeed: 8
+  _moveSpeed: 5
   _rambleOpportunity: 1
   _idleRangetime: {x: 0.4, y: 1}
   _rambleRangeTime: {x: 0.8, y: 1.6}
@@ -55,6 +56,19 @@ MonoBehaviour:
   _eatenArea:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
+--- !u!114 &2706196494441424280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2788860711541200796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b88bce4bebaf82f4fadbe53a13429217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _depthType: 0
 --- !u!61 &2788860711541200797
 BoxCollider2D:
   m_ObjectHideFlags: 0

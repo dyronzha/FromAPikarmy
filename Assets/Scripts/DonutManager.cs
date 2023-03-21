@@ -35,16 +35,17 @@ namespace FromAPikarmy
 			var eatenArea = donut.EatenArea;
 			if (!eatenArea.Intersects(_player.EatArea))
 			{
-				var playerPos = _player.Position;
-				var diff = playerPos - _player.LastPosition;
-				Ray ray = new Ray(playerPos, diff.normalized);
-				if(!(eatenArea.IntersectRay(ray, out float distance) && distance * distance <= diff.sqrMagnitude))
+				Vector2 playerPos2D = _player.Position;
+				Vector2 playerLastPos2D = _player.LastPosition;
+				var diff = playerLastPos2D - playerPos2D;
+				
+				Ray ray = new Ray(playerPos2D, diff.normalized);
+				if (!(eatenArea.IntersectRay(ray, out float distance) && distance * distance <= diff.sqrMagnitude))
 				{
 					return false;
 				}
 			}
 
-			RecycleDonut(donut);
 			_player.EatDonut();
 			return true;
 		}
@@ -65,7 +66,7 @@ namespace FromAPikarmy
 				donut.SetSpawn();
 
 			}
-			return;
+			//return;
 			_spawnTimer += Time.deltaTime;
 			_spawnGapTimer += Time.deltaTime;
 			if (_spawnTimer >= _spawnTime)
