@@ -7,11 +7,16 @@ namespace FromAPikarmy
 	{
 		[SerializeField] private float _startOffset;
 		[SerializeField] private float _moveSpeed;
-		[SerializeField] [Range(0, 1)] private float _rambleOpportunity;
+		[SerializeField] [Range(0, 10)] private int _rambleOpportunity;
 		[SerializeField] private Vector2 _idleRangetime;
 		[SerializeField] private Vector2 _rambleRangeTime;
 		[SerializeField] private Vector2 _rambleChangeDirRangeTime;
+		[SerializeField] private Transform _spriteTransform;
+		[SerializeField] private SpriteRenderer _familyFriendlySprite;
+		[SerializeField] private DonutAnimationModule _animationModule;
 		[SerializeField] private BoxCollider2D _collider;
+
+		private int _faceDir = -1;
 
 		private float _stateTimer;
 		private float _idleTime;
@@ -52,6 +57,8 @@ namespace FromAPikarmy
 		{
 			_currentState = null;
 			transform.rotation = Quaternion.identity;
+			_spriteTransform.localScale = Vector3.one;
+			_familyFriendlySprite.enabled = false;
 			gameObject.SetActive(false);
 		}
 
@@ -67,10 +74,6 @@ namespace FromAPikarmy
 			{
 				_currentState?.Invoke();
 				UpdateTransform();
-				if (_donutManager.DetectBeEaten(this))
-				{
-					SetEaten();
-				}
 			}
 		}
 
@@ -96,6 +99,7 @@ namespace FromAPikarmy
 				Debug.Log($"end move in");
 				RandomIdleRamble();
 			}
+			DetectEaten();
 		}
 
 		private void SetIdle()
@@ -103,7 +107,8 @@ namespace FromAPikarmy
 			Debug.Log($"set idle");
 			_stateTimer = 0;
 			_currentState = _idleState;
-			_idleTime = UnityEngine.Random.Range(_idleRangetime.x, _idleRangetime.y);	
+			_idleTime = UnityEngine.Random.Range(_idleRangetime.x, _idleRangetime.y);
+			_animationModule.PlayIdle();
 		}
 
 		private void OnIdle()
@@ -113,11 +118,13 @@ namespace FromAPikarmy
 			{
 				RandomIdleRamble();
 			}
+			DetectEaten();
 		}
 
 		private void RandomIdleRamble()
 		{
-			if (UnityEngine.Random.Range(0, 1) - _rambleOpportunity < 0.001f)
+			var opp = UnityEngine.Random.Range(0, 10);
+			if (opp <= _rambleOpportunity)
 			{
 				SetRamble();
 			}
@@ -134,11 +141,13 @@ namespace FromAPikarmy
 			_rambleTime = UnityEngine.Random.Range(_rambleRangeTime.x, _rambleRangeTime.y);
 			_rambleChangeDirTime = UnityEngine.Random.Range(_rambleChangeDirRangeTime.x, _rambleChangeDirRangeTime.y);
 			_rambleDir = RandomDir();
+			_animationModule.PlayRun();
 		}
 
 		private Vector2 RandomDir()
 		{
 			var newDir = Quaternion.Euler(0, 0, UnityEngine.Random.Range(60, 300)) * Vector2.right;
+			_faceDir = Mathf.RoundToInt(Mathf.Sign(newDir.x));
 			return newDir;
 		}
 
@@ -162,6 +171,15 @@ namespace FromAPikarmy
 				_position += DeltaTime * _moveSpeed * _lastRambleDir;
 				_position.Set(_position.x, BoundaryManager.Instance.ClampPositionY(_position.y), _position.z);
 			}
+			DetectEaten();
+		}
+
+		private void DetectEaten()
+		{
+			if (_donutManager.DetectBeEaten(this))
+			{
+				SetEaten();
+			}
 		}
 
 		private bool OnScrolling()
@@ -177,7 +195,15 @@ namespace FromAPikarmy
 
 		private void UpdateTransform()
 		{
+			if (_faceDir != 0)
+			{
+				Vector3 scale = transform.localScale;
+				scale.Set(_faceDir * scale.x, scale.y, scale.z);
+				_spriteTransform.localScale = scale;
+				_faceDir = 0;
+			}
 			transform.position = _position;
+			
 			Vector2 min = new Vector2(_position.x - _eatenArea.extents.x, _position.y - _eatenArea.extents.y);
 			Vector2 max = new Vector2(_position.x + _eatenArea.extents.x, _position.y + _eatenArea.extents.y);
 			_eatenArea.SetMinMax(min, max);
@@ -186,7 +212,7 @@ namespace FromAPikarmy
 		public void SetEaten()
 		{
 			_currentState = null;
-			transform.rotation = Quaternion.Euler(0,0,90);
+			_animationModule.PlayEaten();
 		}
 	}
 }

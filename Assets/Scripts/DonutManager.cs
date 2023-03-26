@@ -14,6 +14,7 @@ namespace FromAPikarmy
 		[SerializeField] private GameObject _donutPrefab;
 		[SerializeField] private Player _player;
 
+		private int _frameEatenCount;
 		private float _spawnTimer;
 		private float _spawnGapTimer;
 		private float _spawnTime;
@@ -46,7 +47,7 @@ namespace FromAPikarmy
 				}
 			}
 
-			_player.EatDonut();
+			_frameEatenCount++;
 			return true;
 		}
 
@@ -86,11 +87,20 @@ namespace FromAPikarmy
 					int amount = Mathf.Min(needAmount, Random.Range(0, _maxImmediatelySpawmCount));
 					for (int i = 0; i < amount; i++)
 					{
-						var donut = SpawnDonut();
-						donut.SetSpawn();
+						//var donut = SpawnDonut();
+						//donut.SetSpawn();
 					}
 				}
 				
+			}
+		}
+
+		private void LateUpdate()
+		{
+			if (_frameEatenCount > 0)
+			{
+				_player.EatDonut(_frameEatenCount);
+				_frameEatenCount = 0;
 			}
 		}
 

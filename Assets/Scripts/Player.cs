@@ -16,17 +16,18 @@ namespace FromAPikarmy
 		[SerializeField] private float _moveSpeed;
 		[SerializeField] private SpriteRenderer _sprite;
 		[SerializeField] private BoxCollider2D _collider;
-		[SerializeField] private TomoeManager _tomoeManager;
+		[SerializeField] private PikameeAnimationModule _animationModule;
 		[SerializeField] private LineRenderer _dashHint;
+		[SerializeField] private TomoeManager _tomoeManager;
 		[SerializeField] private DashEffectManager _dashEffectManager;
 		[SerializeField] private DonutManager _donutManager;
+		[SerializeField] private DenkiManager _denkiManager;
+
 
 		private int _waitUpdateDashCounter = 3;
 		private int _lastDashHintCount;
-		private int _tomoeCount = 3;
 		private Vector3 _size;
 		private Vector3 _position;
-		private Vector2[] _dashHitPoints = new Vector2[2];
 		private Bounds _eatArea;
 		private PlayerInputModule _inputModule;
 
@@ -38,8 +39,10 @@ namespace FromAPikarmy
 
 		private float DeltaTime => Time.deltaTime;
 
-		public void EatDonut()
+		public void EatDonut(int count)
 		{
+			_animationModule.PlayEat();
+			_denkiManager.AddDenki(count);
 			Debug.Log($"eat donut");
 		}
 
@@ -116,7 +119,7 @@ namespace FromAPikarmy
 			transform.position = _position;
 			Vector2 min = new Vector2(_position.x - _eatArea.extents.x, _position.y - _eatArea.extents.y);
 			Vector2 max = new Vector2(_position.x + _eatArea.extents.x, _position.y + _eatArea.extents.y);
-			_eatArea.SetMinMax(min, max);	
+			_eatArea.SetMinMax(min, max);
 		}
 
 		private void UpdateDashHint()
@@ -132,7 +135,9 @@ namespace FromAPikarmy
 			_dashHint.SetPosition(0, _position);
 			for (int i = 0; i < tomoeCount; i++)
 			{
-				_dashHint.SetPosition(i + 1, _tomoeManager.UsingTomoes[i].Position);
+				var pos = _tomoeManager.UsingTomoes[i].Position;
+				pos.z = _position.z;
+				_dashHint.SetPosition(i + 1, pos);
 			}
 
 			if (_waitUpdateDashCounter < 2)

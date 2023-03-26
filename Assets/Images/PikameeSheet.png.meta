@@ -1,34 +1,34 @@
 fileFormatVersion: 2
-guid: 7ae7cfce87748e5418b3349bd5683cae
+guid: 1480734f600c8b949ad86288e168879c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7105913188517789750
-    second: shapes_0
+      213: -5318689662717401652
+    second: PikameeSheet_0
   - first:
-      213: 7086606104257924489
-    second: shapes_1
+      213: 2155796050548310744
+    second: PikameeSheet_1
   - first:
-      213: -8166966530815011495
-    second: shapes_2
+      213: -7495986572830219628
+    second: PikameeSheet_2
   - first:
-      213: -488248382649040768
-    second: shapes_3
+      213: 710710142791396361
+    second: PikameeSheet_3
   - first:
-      213: 5659205836826695444
-    second: shapes_4
+      213: -1201651800385637187
+    second: PikameeSheet_4
   - first:
-      213: 24668264497549948
-    second: shapes_5
+      213: -2804579899793908261
+    second: PikameeSheet_5
   - first:
-      213: 3712665597328856465
-    second: shapes_6
+      213: -8037474687344241128
+    second: PikameeSheet_6
   - first:
-      213: -4670554340106798793
-    second: shapes_7
+      213: 16433279789460259
+    second: PikameeSheet_7
   - first:
-      213: 2783794337588708907
-    second: shapes_8
+      213: -861882319813234820
+    second: PikameeSheet_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -59,7 +59,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -73,9 +73,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 40
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -95,7 +95,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -107,7 +107,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -119,7 +119,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -131,7 +131,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -142,190 +142,190 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: shapes_0
+      name: PikameeSheet_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 186
-        width: 61
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: acf32a19a99b26d90800000000000000
-      internalID: -7105913188517789750
+      spriteID: cc5ef2f6ee73036b0800000000000000
+      internalID: -5318689662717401652
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shapes_1
+      name: PikameeSheet_1
       rect:
         serializedVersion: 2
-        x: 95
-        y: 188
-        width: 56
-        height: 56
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 128
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98d886394bea85260800000000000000
-      internalID: 7086606104257924489
+      spriteID: 8d24f19061deaed10800000000000000
+      internalID: 2155796050548310744
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shapes_2
+      name: PikameeSheet_2
       rect:
         serializedVersion: 2
-        x: 187
-        y: 188
-        width: 59
-        height: 59
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 256
+        y: 256
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 955544ee53b19ae80800000000000000
-      internalID: -8166966530815011495
+      spriteID: 4926b5d6de7e8f790800000000000000
+      internalID: -7495986572830219628
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shapes_3
+      name: PikameeSheet_3
       rect:
         serializedVersion: 2
-        x: 5
-        y: 101
-        width: 68
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0808b0ecea46939f0800000000000000
-      internalID: -488248382649040768
+      spriteID: 90c295ffb13fcd900800000000000000
+      internalID: 710710142791396361
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shapes_4
+      name: PikameeSheet_4
       rect:
         serializedVersion: 2
-        x: 94
-        y: 104
-        width: 68
-        height: 60
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 128
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4175fde89b9898e40800000000000000
-      internalID: 5659205836826695444
+      spriteID: db43e4edd00e25fe0800000000000000
+      internalID: -1201651800385637187
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shapes_5
+      name: PikameeSheet_5
       rect:
         serializedVersion: 2
-        x: 191
-        y: 101
-        width: 50
-        height: 70
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 256
+        y: 128
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c721a96e7a3a75000800000000000000
-      internalID: 24668264497549948
+      spriteID: bdd5590c0712419d0800000000000000
+      internalID: -2804579899793908261
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shapes_6
+      name: PikameeSheet_6
       rect:
         serializedVersion: 2
-        x: 6
-        y: 17
-        width: 62
-        height: 54
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1959992b0b9068330800000000000000
-      internalID: 3712665597328856465
+      spriteID: 81617a13b57257090800000000000000
+      internalID: -8037474687344241128
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shapes_7
+      name: PikameeSheet_7
       rect:
         serializedVersion: 2
-        x: 98
-        y: 24
-        width: 61
-        height: 58
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 128
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 73976c5c29bde2fb0800000000000000
-      internalID: -4670554340106798793
+      spriteID: 32b685c1bf16a3000800000000000000
+      internalID: 16433279789460259
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: shapes_8
+      name: PikameeSheet_8
       rect:
         serializedVersion: 2
-        x: 187
-        y: 31
-        width: 56
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 256
+        y: 0
+        width: 128
+        height: 128
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2608bb633602a620800000000000000
-      internalID: 2783794337588708907
+      spriteID: c7fa759b89af904f0800000000000000
+      internalID: -861882319813234820
       vertices: []
       indices: 
       edges: []
@@ -333,7 +333,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 14a5b3b223d8eb1499ef58ce049e945c
+    spriteID: 01c82ae7c82730f4faf120c9bfcf898d
     internalID: 0
     vertices: []
     indices: 

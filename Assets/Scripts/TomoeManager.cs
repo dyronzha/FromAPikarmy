@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace FromAPikarmy
 {
@@ -9,6 +10,7 @@ namespace FromAPikarmy
 		[SerializeField] private Vector3 _spawnPosition;
 		[SerializeField] private GameObject _tomoePrefab;
 		[SerializeField] private Player _player;
+		[SerializeField] private Image[] _tomoeUI;
 
 		private Stack<Tomoe> _tomoePool = new Stack<Tomoe>();
 		private List<Tomoe> _usingTomoes = new List<Tomoe>();
@@ -22,6 +24,7 @@ namespace FromAPikarmy
 		{
 			var tomoe = SpawnTomoe();
 			tomoe.StartFly(startPos, endPos);
+			UpdateTomoeUI();
 		}
 
 		public void PickTomoe(bool isTomoeBusy, Tomoe tomoe)
@@ -64,7 +67,17 @@ namespace FromAPikarmy
 			{
 				_usingTomoes.Remove(tomoe);
 			}
+			UpdateTomoeUI();
 		}
 
+		private void UpdateTomoeUI()
+		{
+			int total = _tomoeUI.Length;
+			int canUseCount = total - UsingCount;
+			for (int i = 0; i < total; i++)
+			{
+				_tomoeUI[i].enabled = i < canUseCount;
+			}
+		}
 	}
 }

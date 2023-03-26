@@ -88,7 +88,6 @@ namespace FromAPikarmy
 			_floatSwitchTime = UnityEngine.Random.Range(_floatSwitchTimeRange.x, _floatSwitchTimeRange.y);
 
 			_position = startPos;
-			Debug.Log($"start fly position {_position}");
 			_spriteTransform.rotation = _flyDirRotattion;
 			_currentState = _flyState;
 
@@ -103,7 +102,6 @@ namespace FromAPikarmy
 
 		private void OnFly()
 		{
-			Debug.Log($"Onfly position {_position}");
 			var diffVector = new Vector2(_targtPos.x - _position.x, _targtPos.y - _position.y);
 			var flySpeed = _flyMaxSpeed;
 
