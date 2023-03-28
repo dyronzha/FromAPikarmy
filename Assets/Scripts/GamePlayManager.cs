@@ -1,18 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GamePlayManager : MonoBehaviour
+namespace FromAPikarmy
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public class GamePlayManager : MonoBehaviour
+	{
+		[SerializeField] DenkiManager _denkiManager;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+		private static GamePlayManager _instance;
+
+		public bool Pause { get; private set; }
+		public bool Achieve { get; private set; }
+
+		public bool StopUpdate => Pause || Achieve;
+
+		public static GamePlayManager Instance
+		{
+			get
+			{
+				if (_instance == null)
+				{
+					_instance = GameObject.FindObjectOfType<GamePlayManager>();
+				}
+				return _instance;
+			}
+		}
+
+		private void Awake()
+		{
+			_instance = this;
+		}
+
+		private void Update()
+		{
+			if (Achieve)
+			{
+				if (_denkiManager.CurrentDenki <= 0f)
+				{
+					Achieve = true;
+					Time.timeScale = 0f;
+				}
+			}
+			else
+			{
+
+			}
+		}
+	}
 }

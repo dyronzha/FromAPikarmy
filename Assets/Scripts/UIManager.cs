@@ -21,21 +21,11 @@ namespace FromAPikarmy
 			}
 		}
 
-		public void ConverNumber(int value, out Sprite thousand, out Sprite hundred, out Sprite ten, out Sprite unit)
+		public void ConverNumber(int value, out Sprite hundred, out Sprite ten, out Sprite unit)
 		{
 			float temp = 0f;
 			int i = 0;
-			thousand = hundred = ten = _pixelNumber[0];
-			if (value >= 1000)
-			{
-				temp = value * 0.001f;
-				i = (int)temp;
-				thousand = _pixelNumber[i];
-				if (temp > 0)
-				{
-					value -= i * 1000;
-				}
-			}
+			hundred = ten = _pixelNumber[0];
 			if (value >= 100)
 			{
 				temp = value * 0.01f;

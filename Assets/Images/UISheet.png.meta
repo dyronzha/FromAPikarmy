@@ -181,10 +181,10 @@ TextureImporter:
       name: UISheet_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 52
-        width: 6
-        height: 8
+        x: 17
+        y: 51
+        width: 9
+        height: 10
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -203,9 +203,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 61
-        y: 52
-        width: 5
-        height: 8
+        y: 51
+        width: 6
+        height: 10
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -223,10 +223,10 @@ TextureImporter:
       name: UISheet_2
       rect:
         serializedVersion: 2
-        x: 103
-        y: 52
-        width: 5
-        height: 8
+        x: 101
+        y: 51
+        width: 8
+        height: 11
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -244,10 +244,10 @@ TextureImporter:
       name: UISheet_3
       rect:
         serializedVersion: 2
-        x: 145
-        y: 52
-        width: 5
-        height: 8
+        x: 144
+        y: 50
+        width: 6
+        height: 12
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -265,10 +265,10 @@ TextureImporter:
       name: UISheet_4
       rect:
         serializedVersion: 2
-        x: 187
-        y: 52
-        width: 5
-        height: 8
+        x: 186
+        y: 51
+        width: 7
+        height: 12
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -286,10 +286,10 @@ TextureImporter:
       name: UISheet_5
       rect:
         serializedVersion: 2
-        x: 19
+        x: 18
         y: 36
-        width: 5
-        height: 8
+        width: 7
+        height: 10
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -307,10 +307,10 @@ TextureImporter:
       name: UISheet_6
       rect:
         serializedVersion: 2
-        x: 61
-        y: 36
-        width: 5
-        height: 8
+        x: 60
+        y: 35
+        width: 8
+        height: 12
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -328,10 +328,10 @@ TextureImporter:
       name: UISheet_7
       rect:
         serializedVersion: 2
-        x: 103
+        x: 102
         y: 36
-        width: 5
-        height: 8
+        width: 9
+        height: 10
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -350,9 +350,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 144
-        y: 36
-        width: 6
-        height: 8
+        y: 35
+        width: 7
+        height: 10
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -373,7 +373,7 @@ TextureImporter:
         x: 186
         y: 36
         width: 6
-        height: 8
+        height: 10
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -70,6 +70,11 @@ namespace FromAPikarmy
 
 		private void Update()
 		{
+			if (GamePlayManager.Instance.StopUpdate)
+			{
+				return;
+			}
+
 			if (OnScrolling())
 			{
 				_currentState?.Invoke();

@@ -62,6 +62,11 @@ namespace FromAPikarmy
 
 		private void Update()
 		{
+			if (GamePlayManager.Instance.StopUpdate)
+			{
+				return;
+			}
+
 			LastPosition = _position;
 			_position = transform.position;
 

@@ -29,7 +29,7 @@ namespace FromAPikarmy
 		{
 			float value = (_inCombo) ? _perAddDenki * _comboMultipler : _perAddDenki;
 			value *= count;
-			_currentDenki = Mathf.Clamp(_currentDenki + value, 0,  _maxDenki);
+			_currentDenki = Mathf.Clamp(_currentDenki + value, -0.1f,  _maxDenki);
 			_inCombo = true;
 			_comboCount += count;
 			_comboTimer = 0f;
@@ -66,11 +66,10 @@ namespace FromAPikarmy
 
 		private void SetComboNumber(int number)
 		{
-			UIManager.Instance.ConverNumber(number, out var thousand, out var hundred, out var ten, out var unit);
-			_comboNumber[0].sprite = thousand;
-			_comboNumber[1].sprite = hundred;
-			_comboNumber[2].sprite = ten;
-			_comboNumber[3].sprite = unit;
+			UIManager.Instance.ConverNumber(number, out var hundred, out var ten, out var unit);
+			_comboNumber[0].sprite = hundred;
+			_comboNumber[1].sprite = ten;
+			_comboNumber[2].sprite = unit;
 		}
 	}
 }

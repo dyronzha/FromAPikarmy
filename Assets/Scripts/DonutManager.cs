@@ -67,7 +67,12 @@ namespace FromAPikarmy
 				donut.SetSpawn();
 
 			}
-			//return;
+			
+			if (GamePlayManager.Instance.StopUpdate)
+			{
+				return;
+			}
+
 			_spawnTimer += Time.deltaTime;
 			_spawnGapTimer += Time.deltaTime;
 			if (_spawnTimer >= _spawnTime)
@@ -87,8 +92,8 @@ namespace FromAPikarmy
 					int amount = Mathf.Min(needAmount, Random.Range(0, _maxImmediatelySpawmCount));
 					for (int i = 0; i < amount; i++)
 					{
-						//var donut = SpawnDonut();
-						//donut.SetSpawn();
+						var donut = SpawnDonut();
+						donut.SetSpawn();
 					}
 				}
 				
