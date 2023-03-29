@@ -71,7 +71,6 @@ namespace FromAPikarmy
 			}
 			else if (_waitLeave)
 			{
-				Debug.Log($"player pos {_player.Position}");
 				if (!BoundaryManager.Instance.CheckPositionInArea(_player.Position))
 				{
 					LoadingManager.LoadScene(_titleSceneIndex);

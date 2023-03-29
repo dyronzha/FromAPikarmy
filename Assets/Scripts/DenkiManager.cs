@@ -16,7 +16,7 @@ namespace FromAPikarmy
 		[SerializeField] private Animator _comboAnimator;
 		[SerializeField] private string _comboAniName;
 
-		[SerializeField] private float _currentDenki;
+		private float _currentDenki;
 
 		private bool _inCombo;
 		private int _comboCount;

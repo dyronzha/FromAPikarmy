@@ -11,6 +11,8 @@ namespace FromAPikarmy
 		private static BoundaryManager _instance;
 		private Bounds _areaBounds;
 
+		public Bounds Bounds => _areaBounds;
+
 		public static BoundaryManager Instance
 		{
 			get
@@ -44,13 +46,10 @@ namespace FromAPikarmy
 			if (!CheckPositionInArea(to))
 			{
 				Vector2 dir = (from - to).normalized;
-				Debug.Log($"to {to} / from {from} / dir {dir}");
 
-				
 				Ray ray = new Ray(to, dir);
 				if (_areaBounds.IntersectRay(ray, out var length))
 				{
-					Debug.Log($"length {length} / {to + length * dir}");
 					return to + length * dir;
 				}
 			}

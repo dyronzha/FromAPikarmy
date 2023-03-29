@@ -49,7 +49,6 @@ namespace FromAPikarmy
 		{
 			_animationModule.PlayEat();
 			_denkiManager.AddDenki(count);
-			Debug.Log($"eat donut");
 		}
 
 		public void SetEnd()

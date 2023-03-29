@@ -11,6 +11,11 @@ public class DepthOffset : MonoBehaviour
 
 	[SerializeField] private DepthType _depthType;
 
+	public static float GetDepthZ(DepthType depthType, float posY)
+	{
+		return (int)depthType + posY;
+	}
+
 	private void LateUpdate()
 	{
 		var pos = transform.position;

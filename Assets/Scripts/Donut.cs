@@ -100,7 +100,6 @@ namespace FromAPikarmy
 			_position.Set(_position.x, BoundaryManager.Instance.ClampPositionY(_position.y), _position.z);
 			if (BoundaryManager.Instance.CheckPositionInArea(_position))
 			{
-				Debug.Log($"end move in");
 				RandomIdleRamble();
 			}
 			DetectEaten();
@@ -108,7 +107,6 @@ namespace FromAPikarmy
 
 		private void SetIdle()
 		{
-			Debug.Log($"set idle");
 			_stateTimer = 0;
 			_currentState = _idleState;
 			_idleTime = UnityEngine.Random.Range(_idleRangetime.x, _idleRangetime.y);
@@ -171,7 +169,6 @@ namespace FromAPikarmy
 					_rambleChangeDirTime = _stateTimer + UnityEngine.Random.Range(_rambleChangeDirRangeTime.x, _rambleChangeDirRangeTime.y);
 				}
 				_lastRambleDir = Vector3.RotateTowards(_lastRambleDir, _rambleDir, 10 * DeltaTime, 0).normalized;
-				//_lastRambleDir = Vector3.Lerp(_lastRambleDir, _rambleDir, Time.deltaTime);
 				_position += DeltaTime * _moveSpeed * _lastRambleDir;
 				_position.Set(_position.x, BoundaryManager.Instance.ClampPositionY(_position.y), _position.z);
 			}

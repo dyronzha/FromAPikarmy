@@ -1,7 +1,19 @@
 fileFormatVersion: 2
 guid: 45ae9ae80934b4b40945d99620269b77
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -7295557126873652353
+    second: SceneObjects_6
+  - first:
+      213: 61737348644911123
+    second: SceneObjects_8
+  - first:
+      213: -244845074951405869
+    second: SceneObjects_11
+  - first:
+      213: -652691400359967817
+    second: SceneObjects_12
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -392,9 +404,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 8
-        y: 0
-        width: 98
-        height: 57
+        y: 35
+        width: 40
+        height: 15
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -446,6 +458,90 @@ TextureImporter:
       bones: []
       spriteID: 7bfb3d699094e9f10800000000000000
       internalID: 2278338767030042551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SceneObjects_6
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 36
+        width: 40
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7360265279f0ca90800000000000000
+      internalID: -7295557126873652353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SceneObjects_8
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 3
+        width: 30
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 318ba5f9ac55bd000800000000000000
+      internalID: 61737348644911123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SceneObjects_11
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 5
+        width: 61
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3de748a93b22a9cf0800000000000000
+      internalID: -244845074951405869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SceneObjects_12
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 7
+        width: 30
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b3879521ac21f6f0800000000000000
+      internalID: -652691400359967817
       vertices: []
       indices: 
       edges: []

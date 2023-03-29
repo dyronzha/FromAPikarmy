@@ -47,7 +47,6 @@ namespace FromAPikarmy
 			float progress = 0;
 			while (!asyncOperation.isDone)
 			{
-				Debug.Log("Pro :" + asyncOperation.progress);
 				progress = asyncOperation.progress;
 				_loadingBar.fillAmount = asyncOperation.progress;
 				_loadingPercent.text = string.Format(_percentFormat, asyncOperation.progress * 100);
