@@ -33,7 +33,7 @@ namespace FromAPikarmy
 		private Action _currentState;
 		private Action _moveInState;
 		private Action _idleState;
-		private Action _eatenState;
+		private Action _endState;
 		private Action _rambleState;
 
 		private DonutManager _donutManager;
@@ -70,11 +70,10 @@ namespace FromAPikarmy
 
 		private void Update()
 		{
-			if (GamePlayManager.Instance.StopUpdate)
+			if (GamePlayManager.Instance.Pause)
 			{
 				return;
 			}
-
 			if (OnScrolling())
 			{
 				_currentState?.Invoke();
@@ -218,6 +217,26 @@ namespace FromAPikarmy
 		{
 			_currentState = null;
 			_animationModule.PlayEaten();
+		}
+
+		public void SetEnd()
+		{
+			if (_currentState == null)
+			{
+				return;
+			}
+			_currentState = _endState;
+			_stateTimer = 0;
+
+			float dirY = UnityEngine.Random.Range(-1, 1);
+			_lastRambleDir = new Vector2(-1, dirY).normalized;
+			_animationModule.PlayRun();
+		}
+
+		public void OnEnd()
+		{
+			_position += _moveSpeed * DeltaTime * _lastRambleDir + ScrollingManager.Instance.ScrollVector;
+			_position.Set(_position.x, BoundaryManager.Instance.ClampPositionY(_position.y), _position.z);
 		}
 	}
 }

@@ -33,11 +33,6 @@ namespace FromAPikarmy
 
 		private void LateUpdate()
 		{
-			if (Input.GetKeyDown(KeyCode.Z))
-			{
-				PlayEat();
-
-			}
 			if (_eatingDonut)
 			{
 				_eatingTimer += Time.deltaTime;

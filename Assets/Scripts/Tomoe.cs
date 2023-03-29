@@ -96,7 +96,7 @@ namespace FromAPikarmy
 
 		private void Update()
 		{
-			if (GamePlayManager.Instance.StopUpdate)
+			if (GamePlayManager.Instance.Pause)
 			{
 				return;
 			}

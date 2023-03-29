@@ -57,9 +57,9 @@ namespace FromAPikarmy
 			return to;
 		}
 
-		public bool CheckPositionInArea(Vector3 position)
+		public bool CheckPositionInArea(Vector2 position)
 		{
-			return _area.bounds.Contains(position);
+			return _areaBounds.Contains(position);
 		}
 
 		public bool CheckScrollingOut(float positionX)
@@ -72,6 +72,11 @@ namespace FromAPikarmy
 			//_area.enabled = false;
 			_instance = this;
 			_areaBounds = _area.bounds;
+		}
+
+		private void OnDestroy()
+		{
+			_instance = null;
 		}
 	}
 }

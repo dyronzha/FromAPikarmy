@@ -34,7 +34,7 @@ namespace FromAPikarmy
 			_comboCount += count;
 			_comboTimer = 0f;
 			SetComboNumber(_comboCount);
-			
+			GamePlayManager.Instance.AddScore(Mathf.RoundToInt(value));
 			if (_comboCount > 1)
 			{
 				_comboAnimator.SetTrigger(_comboAniHashID);
@@ -50,6 +50,10 @@ namespace FromAPikarmy
 
 		private void Update()
 		{
+			if (GamePlayManager.Instance.StopUpdate)
+			{
+				return;
+			}
 			_currentDenki = _currentDenki - Time.deltaTime * _consumPerSecond;
 			_denkiBar.fillAmount = _currentDenki / _maxDenki;
 			if (_inCombo)

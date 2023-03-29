@@ -9,7 +9,7 @@ namespace FromAPikarmy
 		[SerializeField] private string _runName;
 		[SerializeField] private string _eatenName;
 
-
+		private bool _isRun = false;
 		private int _idleNameHashID;
 		private int _runNameHashID;
 		private int _eatenNameHashID;
@@ -18,11 +18,17 @@ namespace FromAPikarmy
 
 		public void PlayIdle()
 		{
+			_isRun = false;
 			_animator.Play(_idleNameHashID, 0);
 		}
 
 		public void PlayRun()
 		{
+			if (_isRun)
+			{
+				return;
+			}
+			_isRun = true;
 			_animator.Play(_runNameHashID, 0);
 		}
 

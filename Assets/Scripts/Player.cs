@@ -1,6 +1,4 @@
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace FromAPikarmy
@@ -22,14 +20,22 @@ namespace FromAPikarmy
 		[SerializeField] private DashEffectManager _dashEffectManager;
 		[SerializeField] private DonutManager _donutManager;
 		[SerializeField] private DenkiManager _denkiManager;
+		[SerializeField] private GameObject _byebye;
 
 
 		private int _waitUpdateDashCounter = 3;
 		private int _lastDashHintCount;
+		private int _endSubState = 0;
+		private float _endTimer;
 		private Vector3 _size;
 		private Vector3 _position;
+		private Vector3 _startPos;
 		private Bounds _eatArea;
 		private PlayerInputModule _inputModule;
+
+		private Action _playState;
+		private Action _endState;
+		private Action _currentState;
 
 		public int AvilableTomoeAmount { get; private set; } = 3;
 		public Vector3 LastPosition { get; private set; }
@@ -46,10 +52,25 @@ namespace FromAPikarmy
 			Debug.Log($"eat donut");
 		}
 
-		private void Awake()
+		public void SetEnd()
 		{
+			_currentState = _endState;
+		}
+
+		public void SetLeave()
+		{
+			_endSubState++;
+			_byebye.SetActive(true);
+		}
+
+		private void Awake()
+		{	
 			_dashHint.positionCount = AvilableTomoeAmount + 1;
+			_startPos = transform.position;
 			_inputModule = new PlayerInputModule();
+			_playState = OnUpdateControl;
+			_endState = OnEnd;
+			_currentState = _playState;
 		}
 
 		private void Start()
@@ -62,7 +83,7 @@ namespace FromAPikarmy
 
 		private void Update()
 		{
-			if (GamePlayManager.Instance.StopUpdate)
+			if (GamePlayManager.Instance.Pause)
 			{
 				return;
 			}
@@ -70,15 +91,39 @@ namespace FromAPikarmy
 			LastPosition = _position;
 			_position = transform.position;
 
+			_currentState?.Invoke();
+
+			UpdateTransform();
+			UpdateDashHint();
+		}
+
+		private void OnEnd()
+		{
+			if (_endSubState == 0)
+			{
+				Vector2 diff = (_startPos - _position);
+				_endTimer += Time.deltaTime;
+				Vector3 move = diff.normalized;
+				_position += move * _moveSpeed * Time.deltaTime;
+				if ((diff).sqrMagnitude < 0.05f)
+				{
+					_endSubState++;
+				}
+			}
+			else if(_endSubState == 2)
+			{
+				_position += Time.deltaTime * _moveSpeed * Vector3.right;
+			}
+		}
+
+		private void OnUpdateControl()
+		{
 			_inputModule.Update();
 			if (!DoingDash())
 			{
 				Move();
 				Shoot();
 			}
-
-			UpdateTransform();
-			UpdateDashHint();
 		}
 
 		private bool DoingDash()
@@ -110,7 +155,6 @@ namespace FromAPikarmy
 			{
 				var targetPos = _inputModule.ShootTargetPos;
 				targetPos = BoundaryManager.Instance.ClampPosition(targetPos);
-				//targetPos = _boundaryManager.ClampInAreaByDirection(Position, targetPos);
 				var directionOffset = 0.5f * _size.x * new Vector2(targetPos.x - _position.x, targetPos.y - _position.y).normalized;
 				var fromPos = _position + new Vector3(directionOffset.x, 0.5f * _size.y + directionOffset.y, 0);
 

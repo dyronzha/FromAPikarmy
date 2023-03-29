@@ -51,6 +51,14 @@ namespace FromAPikarmy
 			return true;
 		}
 
+		public void SetEnd()
+		{
+			foreach (var donut in _usedDonuts)
+			{
+				donut.SetEnd();
+			}
+		}
+
 		private void Awake()
 		{
 			_spawnTimer = _spawnRangeTime.y;

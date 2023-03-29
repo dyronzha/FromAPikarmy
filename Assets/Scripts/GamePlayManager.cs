@@ -4,14 +4,23 @@ namespace FromAPikarmy
 {
 	public class GamePlayManager : MonoBehaviour
 	{
+		[SerializeField] Player _player;
 		[SerializeField] DenkiManager _denkiManager;
+		[SerializeField] DonutManager _donutManager;
+		[SerializeField] UIManager _uiManager;
+		[SerializeField] Animator _UIAni;
 
 		private static GamePlayManager _instance;
 
-		public bool Pause { get; private set; }
-		public bool Achieve { get; private set; }
+		private bool _waitLeave;
+		private int _titleSceneIndex = 1;
+		private int _score;
+		private float _lastScoreTime;
 
-		public bool StopUpdate => Pause || Achieve;
+		public bool Pause { get; private set; }
+		public bool End { get; private set; }
+
+		public bool StopUpdate => Pause || End;
 
 		public static GamePlayManager Instance
 		{
@@ -25,25 +34,55 @@ namespace FromAPikarmy
 			}
 		}
 
+		public void AddScore(int value)
+		{
+			_score += value;
+			_uiManager.UpdateScoreUI(_score);
+		}
+
 		private void Awake()
 		{
 			_instance = this;
+			_lastScoreTime = Time.time;
+			_uiManager.OnEndScroll += EndScroll;
+		}
+
+		private void OnDestroy()
+		{
+			_instance = null;
 		}
 
 		private void Update()
 		{
-			if (Achieve)
+			if (!End)
 			{
+				if(Time.time > _lastScoreTime + 1)
+				{
+					_lastScoreTime = Time.time;
+					AddScore(1);
+				}
 				if (_denkiManager.CurrentDenki <= 0f)
 				{
-					Achieve = true;
-					Time.timeScale = 0f;
+					_uiManager.SratrEndScroll(_score);
+					_player.SetEnd();
+					_donutManager.SetEnd();
+					End = true;
 				}
 			}
-			else
+			else if (_waitLeave)
 			{
-
+				Debug.Log($"player pos {_player.Position}");
+				if (!BoundaryManager.Instance.CheckPositionInArea(_player.Position))
+				{
+					LoadingManager.LoadScene(_titleSceneIndex);
+				}
 			}
+		}
+
+		private void EndScroll()
+		{
+			_waitLeave = true;
+			_player.SetLeave();
 		}
 	}
 }
