@@ -27,6 +27,11 @@ namespace FromAPikarmy
 			_closeBtn.onClick.AddListener(CloseWindow);
 		}
 
+		private void Start()
+		{
+			SetContnent(_currentID);
+		}
+
 		private void NextInstruction()
 		{
 			_currentID = (_currentID + 1) % _instructions.Length;
