@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28a156fff17dbf648a222eafbee34fea, type: 3}
-  m_Name: TitleAudioTable
+  m_Name: TitleSFXTable
   m_EditorClassIdentifier: 
   AudioDatas:
   - ID: 0
     Name: BTNHover
-    Audio: {fileID: 8300000, guid: 5088070e647070147a77298703ec59d4, type: 3}
+    Clip: {fileID: 8300000, guid: 5088070e647070147a77298703ec59d4, type: 3}
+    EnableRandomPitch: 0
+    RandomPitchRange: {x: -1, y: 1}
   - ID: 1
     Name: BTNClick
-    Audio: {fileID: 8300000, guid: 94dfbc401c4cf184593bb3437ac2fd40, type: 3}
+    Clip: {fileID: 8300000, guid: 94dfbc401c4cf184593bb3437ac2fd40, type: 3}
+    EnableRandomPitch: 0
+    RandomPitchRange: {x: -1, y: 1}

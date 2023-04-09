@@ -6,27 +6,39 @@ namespace FromAPikarmy
 {
 	public class UIStepSlider : Slider
 	{
-		public event Action<int> OnValueChange;
+		public new Action<int> onValueChanged { get; set; }
 
 		[SerializeField] private int _stepValue;
+		[SerializeField] private Text _valueText;
 
 		private int _stepCount;
 		private int _oringinMin;
 		private int _oringinMax;
+		private int _finalValue;
+
+		public new float value
+		{
+			get => _finalValue;
+			set
+			{
+				base.value = Mathf.RoundToInt((value - _oringinMin) / _stepValue);
+			}
+		}
 
 		protected override void Awake()
 		{
 			base.Awake();
 			if (Application.isPlaying)
 			{
-				var oringinValue = value;
+				var oringinValue = base.value;
 				_oringinMin = (int)minValue;
 				_oringinMax = (int)maxValue;
 				_stepCount = Mathf.RoundToInt((maxValue - minValue) / _stepValue);
 				minValue = 0;
 				maxValue = _stepCount;
-				value = Mathf.RoundToInt((oringinValue - _oringinMin) / _stepValue);
-				onValueChanged.AddListener(TransStepValue);
+				base.value = Mathf.RoundToInt((oringinValue - _oringinMin) / _stepValue);
+				TransStepValue(base.value);
+				base.onValueChanged.AddListener(TransStepValue);
 			}
 		}
 
@@ -34,8 +46,9 @@ namespace FromAPikarmy
 		{
 			int afterStep = Mathf.RoundToInt(_oringinMin + newValue * _stepValue);
 			afterStep = Mathf.Clamp(afterStep, _oringinMin, _oringinMax);
-			value = afterStep;
-			OnValueChange?.Invoke(afterStep);
+			_finalValue = afterStep;
+			_valueText.text = _finalValue.ToString();
+			onValueChanged?.Invoke(afterStep);
 		}
 	}
 }

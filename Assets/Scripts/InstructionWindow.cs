@@ -10,7 +10,7 @@ namespace FromAPikarmy
 		private class Instruction
 		{
 			public Sprite Image;
-			public string Text;
+			[TextArea]public string Text;
 		}
 
 		[SerializeField] private Button _nextBtn;
