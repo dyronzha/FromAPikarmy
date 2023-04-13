@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -22,9 +23,9 @@ namespace FromAPikarmy
 
 		private static AudioManager _instance;
 
-		private float _masterVolume;
-		private float _musicVolume;
-		private float _sfxVolume;
+		private static float _masterVolume = 0.5f;
+		private static float _musicVolume = 0.5f;
+		private static float _sfxVolume = 0.5f;
 
 		public float BGMVolume => _musicVolume;
 		public float SFXVolume => _sfxVolume;
@@ -45,7 +46,13 @@ namespace FromAPikarmy
 		public void ChangeMasterVolumeByPercent(int percentValue)
 		{
 
-			_masterVolume = Mathf.Clamp01(ConvertVolumePercent(percentValue));
+			var value = ConvertVolumePercent(percentValue);
+			ChangeMasterVolume(value);
+		}
+
+		public void ChangeMasterVolume(float value)
+		{
+			_masterVolume = Mathf.Clamp01(value);
 			if (_masterVolume > 0.05f)
 			{
 				_bgmAudioSource.mute = false;
@@ -61,8 +68,14 @@ namespace FromAPikarmy
 
 		public void ChangeMusicVolumeByPercent(int percentValue)
 		{
-			_musicVolume = Mathf.Clamp01(ConvertVolumePercent(percentValue));
+			var value = ConvertVolumePercent(percentValue);
+			ChangeMusicVolume(value);
 			Debug.LogError($"change music volume percent {percentValue} -> {_musicVolume}");
+		}
+
+		public void ChangeMusicVolume(float value)
+		{	
+			_musicVolume = Mathf.Clamp01(value);
 			if (_musicVolume > 0.05f)
 			{
 				_bgmAudioSource.mute = false;
@@ -72,12 +85,19 @@ namespace FromAPikarmy
 			{
 				_bgmAudioSource.mute = true;
 			}
+			Debug.LogError($"change music volume {Mathf.Lerp(_musicVolumeRange.x, _musicVolumeRange.y, _musicVolume)}");
 		}
 
 		public void ChangeSFXVolumeByPercent(int percentValue)
 		{
 
-			_sfxVolume = Mathf.Clamp01(ConvertVolumePercent(percentValue));
+			var value = Mathf.Clamp01(ConvertVolumePercent(percentValue));
+			ChangeSFXVolume(value);
+		}
+
+		public void ChangeSFXVolume(float value)
+		{
+			_sfxVolume = Mathf.Clamp01(value);
 			if (_sfxVolume > 0.05f)
 			{
 				_sfxAudioSource.mute = false;
@@ -137,12 +157,16 @@ namespace FromAPikarmy
 			}
 			_hasInit = true;
 			_instance = this;
-			_musicVolume = _bgmAudioSource.volume;
-			_sfxVolume = _sfxAudioSource.volume;
 			_sfxTable.CreateTable();
-			ChangeMasterVolumeByPercent(50);
-			ChangeMusicVolumeByPercent(50);
-			ChangeSFXVolumeByPercent(50);
+			StartCoroutine(DelayInitVolume());
+		}
+
+		IEnumerator DelayInitVolume()
+		{
+			yield return null;
+			ChangeMasterVolume(_masterVolume);
+			ChangeMusicVolume(_musicVolume);
+			ChangeSFXVolume(_sfxVolume);
 		}
 	}
 }

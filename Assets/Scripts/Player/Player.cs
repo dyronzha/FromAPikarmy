@@ -47,6 +47,7 @@ namespace FromAPikarmy
 
 		public void EatDonut(int count)
 		{
+			AudioManager.Instance.PlaySFX(3);
 			_animationModule.PlayEat();
 			_denkiManager.AddDenki(count);
 		}
@@ -133,6 +134,7 @@ namespace FromAPikarmy
 				return false;
 			}
 
+			AudioManager.Instance.PlaySFX(2);
 			var tomoe = _tomoeManager.UsingTomoes[0];
 			var nextPosition = new Vector3(tomoe.Position.x, tomoe.Position.y, _position.z);
 			_dashEffectManager.ShowDashEffect(_position, nextPosition);

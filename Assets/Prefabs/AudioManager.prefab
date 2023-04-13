@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd9de6b39550281409db710186a52137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _masterVolumeRange: {x: -20, y: 10}
-  _musicVolumeRange: {x: -50, y: 5}
-  _soundVolumeRange: {x: -20, y: 5}
+  _masterVolumeRange: {x: -20, y: 6}
+  _musicVolumeRange: {x: -50, y: 6}
+  _soundVolumeRange: {x: -20, y: 6}
   _bgmTable: {fileID: 0}
   _sfxTable: {fileID: 0}
   _audioMixer: {fileID: 24100000, guid: 3a8dac73233222d44b5cb1b44fedecd7, type: 2}

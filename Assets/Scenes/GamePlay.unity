@@ -1949,15 +1949,15 @@ SpriteRenderer:
   m_SortingLayerID: -2064477045
   m_SortingLayer: 1
   m_SortingOrder: 1
-  m_Sprite: {fileID: -3671742638147237762, guid: 0ce8823268b4db747a49394ca629a4a1, type: 3}
+  m_Sprite: {fileID: -1777298221535999927, guid: c29733c4e527ba04ab3b849ecfda8314, type: 3}
   m_Color: {r: 0.17254902, g: 0.60784316, b: 0.8235295, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.75, y: 0.75}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &779614778
@@ -2441,6 +2441,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
+    - target: {fileID: 966754535174336047, guid: fa595b7b59bd5b54a993da9bf30c6a4b, type: 3}
+      propertyPath: _sfxTable
+      value: 
+      objectReference: {fileID: 11400000, guid: 178adaaf613b2d3488f7ebf4cf296a3b, type: 2}
     - target: {fileID: 966754535894239900, guid: fa595b7b59bd5b54a993da9bf30c6a4b, type: 3}
       propertyPath: m_audioClip
       value: 
@@ -3566,15 +3570,15 @@ SpriteRenderer:
   m_SortingLayerID: -2064477045
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3671742638147237762, guid: 0ce8823268b4db747a49394ca629a4a1, type: 3}
+  m_Sprite: {fileID: -1777298221535999927, guid: c29733c4e527ba04ab3b849ecfda8314, type: 3}
   m_Color: {r: 0.5372549, g: 0.8352942, b: 0.98823535, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.75, y: 0.75}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1693554695

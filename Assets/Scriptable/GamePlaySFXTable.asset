@@ -10,16 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28a156fff17dbf648a222eafbee34fea, type: 3}
-  m_Name: TitleSFXTable
+  m_Name: GamePlaySFXTable
   m_EditorClassIdentifier: 
   AudioDatas:
   - ID: 0
     Name: BTNHover
     Clip: {fileID: 8300000, guid: 5088070e647070147a77298703ec59d4, type: 3}
     EnableRandomPitch: 0
-    RandomPitchRange: {x: -1, y: 1}
+    RandomPitchRange: {x: 0, y: 0}
   - ID: 1
     Name: BTNClick
     Clip: {fileID: 8300000, guid: 2f61a0b1cfea60941ba9a59c6f49491a, type: 3}
     EnableRandomPitch: 0
-    RandomPitchRange: {x: -1, y: 1}
+    RandomPitchRange: {x: 0, y: 0}
+  - ID: 2
+    Name: Dash
+    Clip: {fileID: 8300000, guid: 111bb1de5c57a9248a9af21def7f2364, type: 3}
+    EnableRandomPitch: 1
+    RandomPitchRange: {x: 0.8, y: 1.2}
+  - ID: 3
+    Name: Eat
+    Clip: {fileID: 8300000, guid: 20f7b4f0e2e131145bd0f57201b3b6eb, type: 3}
+    EnableRandomPitch: 1
+    RandomPitchRange: {x: 0.8, y: 1.2}
