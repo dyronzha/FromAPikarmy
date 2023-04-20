@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace FromAPikarmy
@@ -9,8 +10,29 @@ namespace FromAPikarmy
 		BulletTime,
 	}
 
+	public class DashInfo
+	{
+		public Vector2 Point1 { get; private set; }
+		public Vector2 Point2 { get; private set; }
+		public float RemainTime { get; private set; }
+
+		public void Init(Vector2 p1, Vector2 p2)
+		{
+			Point1 = p1;
+			Point2 = p2;
+			RemainTime = 0;
+		}
+
+		public float UpdaeTime(float deltaTime)
+		{
+			RemainTime += deltaTime;
+			return RemainTime;
+		}
+	}
+
 	public class Player : MonoBehaviour
 	{
+
 		[SerializeField] private float _moveSpeed;
 		[SerializeField] private SpriteRenderer _sprite;
 		[SerializeField] private BoxCollider2D _collider;
@@ -26,22 +48,23 @@ namespace FromAPikarmy
 		private int _waitUpdateDashCounter = 3;
 		private int _lastDashHintCount;
 		private int _endSubState = 0;
-		private float _endTimer;
+		private float _dashRemainTime = 0.1f;
 		private Vector3 _size;
 		private Vector3 _position;
 		private Vector3 _startPos;
 		private Bounds _eatArea;
 		private PlayerInputModule _inputModule;
+		private List<DashInfo> _dashInfos = new List<DashInfo>();
 
 		private Action _playState;
 		private Action _endState;
 		private Action _currentState;
 
 		public int AvilableTomoeAmount { get; private set; } = 3;
-		public Vector3 LastPosition { get; private set; }
 
 		public Vector3 Position => _position;
 		public Bounds EatArea => _eatArea;
+		public ICollection<DashInfo> DashEats => _dashInfos;
 
 		private float DeltaTime => Time.deltaTime;
 
@@ -88,13 +111,13 @@ namespace FromAPikarmy
 				return;
 			}
 
-			LastPosition = _position;
 			_position = transform.position;
 
 			_currentState?.Invoke();
 
 			UpdateTransform();
 			UpdateDashHint();
+			HandleDashInfos();
 		}
 
 		private void OnEnd()
@@ -102,7 +125,6 @@ namespace FromAPikarmy
 			if (_endSubState == 0)
 			{
 				Vector2 diff = (_startPos - _position);
-				_endTimer += Time.deltaTime;
 				Vector3 move = diff.normalized;
 				_position += move * _moveSpeed * Time.deltaTime;
 				if ((diff).sqrMagnitude < 0.05f)
@@ -118,7 +140,7 @@ namespace FromAPikarmy
 
 		private void OnUpdateControl()
 		{
-			_inputModule.Update();
+			_inputModule.UpdatePlayerControlInput();
 			if (!DoingDash())
 			{
 				Move();
@@ -138,7 +160,9 @@ namespace FromAPikarmy
 			var tomoe = _tomoeManager.UsingTomoes[0];
 			var nextPosition = new Vector3(tomoe.Position.x, tomoe.Position.y, _position.z);
 			_dashEffectManager.ShowDashEffect(_position, nextPosition);
-
+			var dashInfo = ObjectReusePool<DashInfo>.Spawn();
+			dashInfo.Init(_position, nextPosition);
+			_dashInfos.Add(dashInfo);
 			_tomoeManager.PickTomoe(false, tomoe);
 			_position = nextPosition;
 			return true;
@@ -202,7 +226,14 @@ namespace FromAPikarmy
 			}
 			_lastDashHintCount = tomoeCount;
 		}
+
+		private void HandleDashInfos()
+		{
+			while (_dashInfos.Count > 0 && _dashInfos[0].UpdaeTime(Time.deltaTime) > _dashRemainTime)
+			{
+				ObjectReusePool<DashInfo>.Despawn(_dashInfos[0]);
+				_dashInfos.RemoveAt(0);
+			}
+		}
 	}
 }
-
-

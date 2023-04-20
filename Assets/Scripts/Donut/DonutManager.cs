@@ -19,9 +19,10 @@ namespace FromAPikarmy
 		private float _spawnGapTimer;
 		private float _spawnTime;
 		private float _spawnGapTime;
+		private int _waitingDonutsAmount;
 
 		private Stack<Donut> _donutPool = new Stack<Donut>();
-		private Queue<int> _waitingDonutsAmount = new Queue<int>();
+		
 		private List<Donut> _usedDonuts = new List<Donut>();
 
 		public List<Donut> UsedDonuts => _usedDonuts;
@@ -34,21 +35,25 @@ namespace FromAPikarmy
 		public bool DetectBeEaten(Donut donut)
 		{
 			var eatenArea = donut.EatenArea;
-			if (!eatenArea.Intersects(_player.EatArea))
+			if (eatenArea.Intersects(_player.EatArea))
 			{
-				Vector2 playerPos2D = _player.Position;
-				Vector2 playerLastPos2D = _player.LastPosition;
-				var diff = playerLastPos2D - playerPos2D;
-				
-				Ray ray = new Ray(playerPos2D, diff.normalized);
-				if (!(eatenArea.IntersectRay(ray, out float distance) && distance * distance <= diff.sqrMagnitude))
-				{
-					return false;
-				}
+				_frameEatenCount++;
+				return true;
 			}
-
-			_frameEatenCount++;
-			return true;
+			else
+			{
+				foreach (var dash in _player.DashEats)
+				{
+					var diff = dash.Point2 - dash.Point1;
+					Ray ray = new Ray(dash.Point1, diff.normalized);
+					if (eatenArea.IntersectRay(ray, out float distance) && distance * distance <= diff.sqrMagnitude)
+					{
+						_frameEatenCount++;
+						return true;
+					}
+				}
+				return false;
+			}
 		}
 
 		public void SetEnd()
@@ -68,14 +73,7 @@ namespace FromAPikarmy
 		}
 
 		private void Update()
-		{
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				var donut = SpawnDonut();
-				donut.SetSpawn();
-
-			}
-			
+		{			
 			if (GamePlayManager.Instance.StopUpdate)
 			{
 				return;
@@ -88,24 +86,25 @@ namespace FromAPikarmy
 				_spawnTimer = 0;
 				_spawnTime = Random.Range(_spawnRangeTime.x, _spawnRangeTime.y);
 				int amount = Random.Range(1, _maxPerSpawmCount);
-				_waitingDonutsAmount.Enqueue(amount);
+				_waitingDonutsAmount += amount;
 			}
 
-			if (_spawnGapTimer >= _spawnGapTime)
+			if (_waitingDonutsAmount > 0 && _spawnGapTimer >= _spawnGapTime)
 			{
 				_spawnGapTimer = 0;
-				if (_waitingDonutsAmount.Count > 0)
+				int amount = Random.Range(0, Mathf.Min(_waitingDonutsAmount, _maxImmediatelySpawmCount));
+				for (int i = 0; i < amount; i++)
 				{
-					int needAmount = _waitingDonutsAmount.Dequeue();
-					int amount = Mathf.Min(needAmount, Random.Range(0, _maxImmediatelySpawmCount));
-					for (int i = 0; i < amount; i++)
-					{
-						var donut = SpawnDonut();
-						donut.SetSpawn();
-					}
+					var donut = SpawnDonut();
+					donut.SetSpawn();
 				}
-				
+				_waitingDonutsAmount -= amount;
 			}
+			//else if (_usedDonuts.Count == 0)
+			//{
+			//	var donut = SpawnDonut();
+			//	donut.SetSpawn();
+			//}
 		}
 
 		private void LateUpdate()
@@ -119,7 +118,7 @@ namespace FromAPikarmy
 
 		private Donut SpawnDonut()
 		{
-			Donut donut = null;
+			Donut donut;
 			if (_donutPool.Count == 0)
 			{
 				donut = Instantiate(_donutPrefab, _spawnPosition, Quaternion.identity, transform).GetComponent<Donut>();

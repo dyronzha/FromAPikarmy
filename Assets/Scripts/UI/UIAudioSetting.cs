@@ -19,6 +19,11 @@ namespace FromAPikarmy
 			_sfxSlider.onValueChanged += OnChangeSFXVolumeByPercent;
 		}
 
+		public void Open()
+		{
+			gameObject.SetActive(true);
+		}
+
 		private void OnClose()
 		{
 			gameObject.SetActive(false);

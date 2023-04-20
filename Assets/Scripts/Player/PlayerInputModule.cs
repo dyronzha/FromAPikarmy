@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace FromAPikarmy
@@ -24,12 +22,22 @@ namespace FromAPikarmy
 
 		#region Keyboard
 
+		public bool PauseGame { get; private set; }
+		public bool EndTextFastForward { get; private set; }
+		public bool EndTextStop { get; private set; }
 		public bool BulletTimeInput { get; private set; }
 		public Vector2 MoveDir { get; private set; }
 
 		#endregion
 
-		public void Update()
+		public void UpdateUIInput()
+		{
+			PauseGame = Input.GetKeyDown(KeyCode.Escape);
+			EndTextFastForward = Input.GetKey(KeyCode.X);
+			EndTextStop = Input.GetKey(KeyCode.Z);
+		}
+
+		public void UpdatePlayerControlInput()
 		{
 			TriggerShoot = Input.GetMouseButtonDown(0);
 			TriggerInstantDash = Input.GetMouseButtonDown(1);

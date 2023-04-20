@@ -4,11 +4,11 @@ namespace FromAPikarmy
 {
 	public class GamePlayManager : MonoBehaviour
 	{
-		[SerializeField] Player _player;
-		[SerializeField] DenkiManager _denkiManager;
-		[SerializeField] DonutManager _donutManager;
-		[SerializeField] UIManager _uiManager;
-		[SerializeField] Animator _UIAni;
+		[SerializeField] private Player _player;
+		[SerializeField] private DenkiManager _denkiManager;
+		[SerializeField] private DonutManager _donutManager;
+		[SerializeField] private UIManager _uiManager;
+		[SerializeField] private Animator _UIAni;
 
 		private static GamePlayManager _instance;
 
@@ -34,6 +34,12 @@ namespace FromAPikarmy
 			}
 		}
 
+		public void SwitchPause()
+		{
+			Pause = !Pause;
+			Time.timeScale = (Pause) ? 0 : 1;
+		}
+
 		public void AddScore(int value)
 		{
 			_score += value;
@@ -54,6 +60,10 @@ namespace FromAPikarmy
 
 		private void Update()
 		{
+			if (Pause)
+			{
+				return;
+			}
 			if (!End)
 			{
 				if(Time.time > _lastScoreTime + 1)

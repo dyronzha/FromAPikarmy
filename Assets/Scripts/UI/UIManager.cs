@@ -9,6 +9,7 @@ namespace FromAPikarmy
 		public event Action OnPikameeLeave;
 		public event Action OnEndScroll;
 
+		[SerializeField] private UIPauseMenu _pauseMenu;
 		[SerializeField] private Text _scoreText;
 		[SerializeField] private Text _endScoreText;
 		[SerializeField] private Animator _animator;
@@ -17,6 +18,7 @@ namespace FromAPikarmy
 		[SerializeField] private GameObject[] _gamePlayUIs;
 
 		private int _endAniID;
+		private PlayerInputModule _inputModule;
 
 		private static UIManager _instance;
 
@@ -27,6 +29,7 @@ namespace FromAPikarmy
 				if (_instance == null)
 				{
 					_instance = GameObject.FindObjectOfType<UIManager>();
+					_instance.Init();
 				}
 				return _instance;
 			}
@@ -75,11 +78,17 @@ namespace FromAPikarmy
 		
 		private void Awake()
 		{
+			Init();
+		}
+
+		private void Init()
+		{
 			if (_instance == null)
 			{
 				_instance = this;
+				_inputModule = new PlayerInputModule();
+				_endAniID = Animator.StringToHash(_endAniName);
 			}
-			_endAniID = Animator.StringToHash(_endAniName);
 		}
 
 		private void OnDestroy()
@@ -89,13 +98,24 @@ namespace FromAPikarmy
 
 		private void Update()
 		{
+			_inputModule.UpdateUIInput();
+			if (_inputModule.PauseGame)
+			{
+				GamePlayManager.Instance.SwitchPause();
+				SwitchPauseMenu(GamePlayManager.Instance.Pause);
+			}
+			if (GamePlayManager.Instance.Pause)
+			{
+				return;
+			}
+
 			if (GamePlayManager.Instance.End)
 			{
-				if (Input.GetKey(KeyCode.X))
+				if (_inputModule.EndTextFastForward)
 				{
 					_animator.speed = 10f;
 				}
-				else if (Input.GetKey(KeyCode.Z))
+				else if (_inputModule.EndTextFastForward)
 				{
 					_animator.speed = 0;
 				}
@@ -115,6 +135,15 @@ namespace FromAPikarmy
 			}
 		}
 
+		private void SwitchPauseMenu(bool isOpen)
+		{
+			if (_pauseMenu != null)
+			{
+				_pauseMenu.SwitchOnOff(isOpen);
+			}
+		}
+
+		#region Animator event
 		private void ScrollTextEnd()
 		{
 			OnEndScroll?.Invoke();
@@ -124,5 +153,6 @@ namespace FromAPikarmy
 		{
 			OnPikameeLeave?.Invoke();
 		}
+		#endregion
 	}
 }

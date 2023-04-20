@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class DashEffectManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _dashEffectPrefab;
+	[SerializeField] private GameObject _dashEffectPrefab;
 
 	private Stack<DashEffect> _dashEffectPool = new Stack<DashEffect>();
 	private List<DashEffect> _usedDashEffects = new List<DashEffect>();
 
-    public void ShowDashEffect(Vector2 startPoint, Vector2 endPoint)
+	public void ShowDashEffect(Vector2 startPoint, Vector2 endPoint)
 	{
 		var dashEffect = SpawnDashEffect();
 		dashEffect.Show(startPoint, endPoint);
@@ -22,7 +22,7 @@ public class DashEffectManager : MonoBehaviour
 
 	private DashEffect SpawnDashEffect()
 	{
-		DashEffect dashEffect = null;
+		DashEffect dashEffect;
 		if (_dashEffectPool.Count == 0)
 		{
 			dashEffect = Instantiate(_dashEffectPrefab, transform).GetComponent<DashEffect>();
