@@ -133,8 +133,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4596016}
   - component: {fileID: 4596015}
+  - component: {fileID: 4596017}
   m_Layer: 0
-  m_Name: GamePlayManager
+  m_Name: SceneSingletonManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -167,10 +168,24 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 850457939}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4596017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4596014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f499b81d0d97ae144b87fda3d228cbb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scrollingSpeed: 10
 --- !u!1 &6308488
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,7 +271,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 33258007}
-  - component: {fileID: 33258009}
+  - component: {fileID: 33258010}
   - component: {fileID: 33258008}
   m_Layer: 0
   m_Name: CloudScroller
@@ -305,7 +320,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 6.812357, y: 2.4000902}
   m_EdgeRadius: 0
---- !u!114 &33258009
+--- !u!114 &33258010
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -314,22 +329,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 33258006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afdfa6aece73cb7418fcaedc54a86b34, type: 3}
+  m_Script: {fileID: 11500000, guid: d585a0a9af58b5e4f925b7c0df833375, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawmAtStart: 1
+  _soloScroll: 0
   _scrollSpeedRatio: 0.4
   _perSpwnCount: 2
   _spawnRangeTime: {x: 3, y: 5}
-  _prefab: {fileID: 8947105441835332801, guid: b077d0d7aab877745ac6ab3d39105b13, type: 3}
+  _spawmAtStart: 1
   _firstSpawnCountRange: {x: 1, y: 2}
   _firstSpawnMin: {x: -15.2, y: 6.8}
   _firstSpawnMax: {x: 15.2, y: 9.2}
-  _refSprites:
+  _prefab: {fileID: 8947105441835332801, guid: b077d0d7aab877745ac6ab3d39105b13, type: 3}
+  _spawnArea: {fileID: 33258008}
+  _spawnSizeRange: {x: 0, y: 0}
+  _spriteSamples:
   - {fileID: 61737348644911123, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
   - {fileID: -244845074951405869, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
   - {fileID: -652691400359967817, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  _spawnArea: {fileID: 33258008}
 --- !u!1 &72946261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,16 +1082,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afdfa6aece73cb7418fcaedc54a86b34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawmAtStart: 1
+  _soloScroll: 0
   _scrollSpeedRatio: 0.1
   _perSpwnCount: 1
   _spawnRangeTime: {x: 15, y: 20}
-  _prefab: {fileID: 7613071504974465915, guid: 12b834494c9ebb442b3dcfe6ce0c5361, type: 3}
+  _spawmAtStart: 0
   _firstSpawnCountRange: {x: 0, y: 1}
   _firstSpawnMin: {x: 6, y: 4}
   _firstSpawnMax: {x: 10, y: 5}
-  _refSprites:
-  - {fileID: 21300000, guid: a08ef2571096d8e42a440f6ff5a6cb42, type: 3}
+  _prefab: {fileID: 7613071504974465915, guid: 12b834494c9ebb442b3dcfe6ce0c5361, type: 3}
   _spawnArea: {fileID: 184155399}
 --- !u!1 &185335054
 GameObject:
@@ -1546,7 +1562,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &361571458
 GameObject:
@@ -2648,7 +2664,7 @@ MonoBehaviour:
   _maxDenki: 500
   _initDenki: 250
   _consumPerSecond: 20
-  _perAddDenki: 25
+  _perAddDenki: 20
   _comboMultipler: 1.5
   _comboTime: 1
   _denkiBar: {fileID: 1642169224}
@@ -3689,12 +3705,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 850457938}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 4596016}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &850457940
 MonoBehaviour:
@@ -3801,7 +3817,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1026411232
 GameObject:
@@ -4652,7 +4668,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1375044201
 GameObject:
@@ -4796,7 +4812,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxPerSpawmCount: 5
   _maxImmediatelySpawmCount: 2
-  _spawnRangeTime: {x: 0.6, y: 1.2}
+  _spawnRangeTime: {x: 1, y: 1.6}
   _spawnGapRangeTime: {x: 0.1, y: 0.4}
   _spawnPosition: {x: 20, y: 0, z: 0}
   _donutPrefab: {fileID: 2788860711541200796, guid: e8e8f8a1713e0b24da5b9a20575974da, type: 3}
@@ -4813,7 +4829,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1470584915
 GameObject:
@@ -5580,50 +5596,6 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 1, b: 0.42352942, a: 0.2784314}
   m_EffectDistance: {x: 2, y: 19.87}
   m_UseGraphicAlpha: 1
---- !u!1 &1596784500
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1596784502}
-  - component: {fileID: 1596784501}
-  m_Layer: 0
-  m_Name: ScrollingManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1596784501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1596784500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f499b81d0d97ae144b87fda3d228cbb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scrollingSpeed: 10
---- !u!4 &1596784502
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1596784500}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.1299057, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1627170421
 GameObject:
   m_ObjectHideFlags: 0
@@ -5656,7 +5628,7 @@ Transform:
   - {fileID: 33258007}
   - {fileID: 184155398}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1642169222
 GameObject:
@@ -5858,7 +5830,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1683659622}
-  - component: {fileID: 1683659623}
+  - component: {fileID: 1683659625}
   - component: {fileID: 1683659624}
   m_Layer: 0
   m_Name: GrassScroller
@@ -5881,37 +5853,6 @@ Transform:
   m_Father: {fileID: 1627170422}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1683659623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1683659621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afdfa6aece73cb7418fcaedc54a86b34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawmAtStart: 1
-  _scrollSpeedRatio: 1
-  _perSpwnCount: 5
-  _spawnRangeTime: {x: 0.2, y: 0.6}
-  _prefab: {fileID: 9068982009815522115, guid: 360fdbe770ce1bf49816d4c5b13dc192, type: 3}
-  _firstSpawnCountRange: {x: 5, y: 10}
-  _firstSpawnMin: {x: -15.2, y: -7.2}
-  _firstSpawnMax: {x: 15.2, y: 3}
-  _refSprites:
-  - {fileID: -120433245383047864, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  - {fileID: -342872718777140944, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  - {fileID: 3886840971103994205, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  - {fileID: 353088247336681442, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  - {fileID: -2636846957066531986, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  - {fileID: -322879967968121476, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  - {fileID: 4917586346329065314, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  - {fileID: -1793532641137822498, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  - {fileID: 2669605406627479249, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  _spawnArea: {fileID: 1683659624}
 --- !u!61 &1683659624
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5938,6 +5879,39 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.8941498, y: 11.159754}
   m_EdgeRadius: 0
+--- !u!114 &1683659625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683659621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d585a0a9af58b5e4f925b7c0df833375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _soloScroll: 0
+  _scrollSpeedRatio: 1
+  _perSpwnCount: 5
+  _spawnRangeTime: {x: 0.2, y: 0.6}
+  _spawmAtStart: 1
+  _firstSpawnCountRange: {x: 5, y: 10}
+  _firstSpawnMin: {x: -15.2, y: -7.2}
+  _firstSpawnMax: {x: 15.2, y: 3}
+  _prefab: {fileID: 9068982009815522115, guid: 360fdbe770ce1bf49816d4c5b13dc192, type: 3}
+  _spawnArea: {fileID: 1683659624}
+  _spawnSizeRange: {x: 0.8, y: 1.5}
+  _spriteSamples:
+  - {fileID: -120433245383047864, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
+  - {fileID: -342872718777140944, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
+  - {fileID: 3886840971103994205, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
+  - {fileID: 353088247336681442, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
+  - {fileID: -2636846957066531986, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
+  - {fileID: -322879967968121476, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
+  - {fileID: 4917586346329065314, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
+  - {fileID: -1793532641137822498, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
+  - {fileID: 2669605406627479249, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
 --- !u!1 &1687244249
 GameObject:
   m_ObjectHideFlags: 0
@@ -6874,7 +6848,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1955296670}
-  - component: {fileID: 1955296672}
+  - component: {fileID: 1955296673}
   - component: {fileID: 1955296671}
   m_Layer: 0
   m_Name: StoneScroller
@@ -6923,7 +6897,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 14.97525, y: 10.146916}
   m_EdgeRadius: 0
---- !u!114 &1955296672
+--- !u!114 &1955296673
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6932,24 +6906,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1955296669}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afdfa6aece73cb7418fcaedc54a86b34, type: 3}
+  m_Script: {fileID: 11500000, guid: d585a0a9af58b5e4f925b7c0df833375, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawmAtStart: 1
+  _soloScroll: 0
   _scrollSpeedRatio: 1
   _perSpwnCount: 5
   _spawnRangeTime: {x: 0.6, y: 1}
-  _prefab: {fileID: 9068982009815522115, guid: 360fdbe770ce1bf49816d4c5b13dc192, type: 3}
+  _spawmAtStart: 1
   _firstSpawnCountRange: {x: 3, y: 5}
   _firstSpawnMin: {x: -15.2, y: -7.2}
   _firstSpawnMax: {x: 15.2, y: 3}
-  _refSprites:
+  _prefab: {fileID: 9068982009815522115, guid: 360fdbe770ce1bf49816d4c5b13dc192, type: 3}
+  _spawnArea: {fileID: 1955296671}
+  _spawnSizeRange: {x: 0.8, y: 1.5}
+  _spriteSamples:
   - {fileID: 2278338767030042551, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
   - {fileID: -7295557126873652353, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
   - {fileID: -4646470651869460355, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
   - {fileID: 5330806850069309648, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
   - {fileID: -1949777401932711463, guid: 45ae9ae80934b4b40945d99620269b77, type: 3}
-  _spawnArea: {fileID: 1955296671}
 --- !u!1 &1961556347
 GameObject:
   m_ObjectHideFlags: 0
@@ -7053,7 +7029,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2092400603
 GameObject:
@@ -7318,7 +7294,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2119789076
 MonoBehaviour:
@@ -7577,7 +7553,7 @@ PrefabInstance:
       objectReference: {fileID: 1366177043}
     - target: {fileID: 3049502986904591598, guid: c86e279742ce8cf4c8b5559f965eb2e1, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3049502986904591598, guid: c86e279742ce8cf4c8b5559f965eb2e1, type: 3}
       propertyPath: m_LocalPosition.x

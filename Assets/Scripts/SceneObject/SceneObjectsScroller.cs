@@ -5,18 +5,19 @@ namespace FromAPikarmy
 {
 	public class SceneObjectsScroller : MonoBehaviour
 	{
-		[SerializeField] private bool _spawmAtStart;
+		[SerializeField] private bool _soloScroll;
 		[SerializeField] private float _scrollSpeedRatio = 1;
 		[SerializeField] private int _perSpwnCount = 1;
 		[SerializeField] private Vector2 _spawnRangeTime;
-		[SerializeField] private GameObject _prefab;
+
+		[SerializeField] private bool _spawmAtStart;
 		[SerializeField] private Vector2 _firstSpawnCountRange;
 		[SerializeField] private Vector2 _firstSpawnMin;
 		[SerializeField] private Vector2 _firstSpawnMax;
-		[SerializeField] private Sprite[] _refSprites;
+
+		[SerializeField] private GameObject _prefab;
 		[SerializeField] private BoxCollider2D _spawnArea;
 
-		private int _randomLength;
 		private float _spawTimer;
 		private float _spawTime;
 		private Bounds _bounds;
@@ -24,23 +25,32 @@ namespace FromAPikarmy
 		private List<SceneObject> _usedObjects = new List<SceneObject>();
 		private List<SceneObject> _waitRecycle = new List<SceneObject>();
 
-		private void Awake()
+
+		protected Vector3 GetRandomSpawnPos(Vector3 min, Vector3 max)
 		{
-			_randomLength = _refSprites.Length;
+			float x = Random.Range(min.x, max.x);
+			float y = Random.Range(min.y, max.y);
+			float z = DepthOffset.GetDepthZ(DepthOffset.DepthType.Normal, y);
+			return new Vector3(x, y, z);
+		}
+
+		protected virtual void SetObject(SceneObject obj, Vector3 pos)
+		{
+			obj.SetPosition(pos);
+			obj.gameObject.SetActive(true);
+		}
+
+		protected virtual void Awake()
+		{
 			_bounds = _spawnArea.bounds;
 			_spawnArea.enabled = false;
 		}
 
 		private void Start()
 		{
-			if (!_spawmAtStart)
+			if (_spawmAtStart)
 			{
-				return;
-			}
-			Debug.Log("spawn boat");
-			for (int i = 0; i < Random.Range(_firstSpawnCountRange.x, _firstSpawnCountRange.y); i++)
-			{
-				FirstSpawn(_firstSpawnMin, _firstSpawnMax);
+				FirstSpawn();
 			}
 		}
 
@@ -50,7 +60,7 @@ namespace FromAPikarmy
 			if (_spawTimer >= _spawTime)
 			{
 				_spawTimer = 0;
-				OnSpawn(_bounds.min, _bounds.max);
+				OnSpawn();
 			}
 
 			foreach (var obj in _waitRecycle)
@@ -72,41 +82,41 @@ namespace FromAPikarmy
 			}
 		}
 
-		private void FirstSpawn(Vector3 min, Vector3 max)
+		private void FirstSpawn()
 		{
-			_spawTime = Random.Range(_spawnRangeTime.x, _spawnRangeTime.y);
-			SpawObject(min, max); ;
+			for (int i = 0; i < Random.Range(_firstSpawnCountRange.x, _firstSpawnCountRange.y); i++)
+			{
+				_spawTime = Random.Range(_spawnRangeTime.x, _spawnRangeTime.y);
+				var pos = GetRandomSpawnPos(_firstSpawnMin, _firstSpawnMax);
+				SpawObject(pos);
+			}
+
 		}
 
-		private void OnSpawn(Vector3 min, Vector3 max)
+		private void OnSpawn()
 		{
 			_spawTime = Random.Range(_spawnRangeTime.x, _spawnRangeTime.y);
 			int count = Random.Range(0, _perSpwnCount);
 			for (int i = 0; i < count; i++)
 			{
-				SpawObject(min, max);
+				var pos = GetRandomSpawnPos(_bounds.min, _bounds.max);
+				SpawObject(pos);
 			}
 		}
 
-		private SceneObject SpawObject(Vector3 min, Vector3 max)
+		protected SceneObject SpawObject(Vector3 spawnPos)
 		{
 			SceneObject obj;
-			float x = Random.Range(min.x, max.x);
-			float y = Random.Range(min.y, max.y);
-			float z = DepthOffset.GetDepthZ(DepthOffset.DepthType.Normal, y);
 			if (_objectPool.Count == 0)
 			{
-
-				obj = Instantiate(_prefab, new Vector3(x, y, z), Quaternion.identity, transform).GetComponent<SceneObject>();
-				int id = Random.Range(0, _randomLength);
-				obj.Init(_refSprites[id]);
+				obj = Instantiate(_prefab, _bounds.max, Quaternion.identity, transform).GetComponent<SceneObject>();
+				obj.Init();
 			}
 			else
 			{
 				obj = _objectPool.Pop();
 			}
-			obj.SetPosition(new Vector3(x, y, z));
-			obj.gameObject.SetActive(true);
+			SetObject(obj, spawnPos);
 			_usedObjects.Add(obj);
 			return obj;
 		}

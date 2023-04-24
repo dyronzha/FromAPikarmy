@@ -90,7 +90,7 @@ namespace FromAPikarmy
 			_position = startPos;
 			_spriteTransform.rotation = _flyDirRotattion;
 			_currentState = _flyState;
-
+			_shadowRenderer.enabled = false;
 			gameObject.SetActive(true);
 		}
 

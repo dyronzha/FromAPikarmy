@@ -9,16 +9,29 @@ namespace FromAPikarmy
 
 		public Vector3 Position => transform.position;
 
-		public void Init(Sprite sprite)
+		public void Init()
 		{
 			transform = base.transform;
 			_render = GetComponent<SpriteRenderer>();
-			_render.sprite = sprite;
 		}
 
 		public void SetPosition(Vector3 pos)
 		{
 			transform.position = pos;
+		}
+
+		public void SetTransformData(Vector3 pos, float scale)
+		{
+			transform.position = pos;
+			transform.localScale = new Vector3(scale, scale, 1);
+		}
+
+		public void SetSprite(Sprite sprite)
+		{
+			if (_render)
+			{
+				_render.sprite = sprite;
+			}
 		}
 
 		public void Scroll(float speed)
