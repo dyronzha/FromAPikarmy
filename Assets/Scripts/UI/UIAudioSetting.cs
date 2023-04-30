@@ -21,6 +21,9 @@ namespace FromAPikarmy
 
 		public void Open()
 		{
+			_masterSlider.value = AudioManager.Instance.MasterVolumePercent;
+			_musicSlider.value = AudioManager.Instance.BGMVolumePercent;
+			_sfxSlider.value = AudioManager.Instance.SFXVolumePercent;
 			gameObject.SetActive(true);
 		}
 

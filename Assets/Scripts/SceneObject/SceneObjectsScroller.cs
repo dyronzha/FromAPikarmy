@@ -51,17 +51,23 @@ namespace FromAPikarmy
 			if (_spawmAtStart)
 			{
 				FirstSpawn();
+				_spawTimer = _spawTime;
 			}
 		}
 
 		private void Update()
 		{
-			_spawTimer += Time.deltaTime;
-			if (_spawTimer >= _spawTime)
+			if (!_soloScroll || _usedObjects.Count == 0)
 			{
-				_spawTimer = 0;
-				OnSpawn();
+				
+				_spawTimer += Time.deltaTime;
+				if (_spawTimer >= _spawTime)
+				{
+					_spawTimer = 0;
+					OnSpawn();
+				}
 			}
+			
 
 			foreach (var obj in _waitRecycle)
 			{
@@ -96,7 +102,7 @@ namespace FromAPikarmy
 		private void OnSpawn()
 		{
 			_spawTime = Random.Range(_spawnRangeTime.x, _spawnRangeTime.y);
-			int count = Random.Range(0, _perSpwnCount);
+			int count = (_soloScroll) ? 1 : Random.Range(0, _perSpwnCount + 1);
 			for (int i = 0; i < count; i++)
 			{
 				var pos = GetRandomSpawnPos(_bounds.min, _bounds.max);

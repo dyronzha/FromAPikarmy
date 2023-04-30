@@ -76,11 +76,13 @@ namespace FromAPikarmy
 					_uiManager.SratrEndScroll(_score);
 					_player.SetEnd();
 					_donutManager.SetEnd();
+					AudioManager.Instance.ChangeBGM(1);
 					End = true;
 				}
 			}
 			else if (_waitLeave)
 			{
+				
 				if (!BoundaryManager.Instance.CheckPositionInArea(_player.Position))
 				{
 					LoadingManager.LoadScene(_titleSceneIndex);
@@ -92,6 +94,7 @@ namespace FromAPikarmy
 		{
 			_waitLeave = true;
 			_player.SetLeave();
+			AudioManager.Instance.FadeOutBGM(3);
 		}
 	}
 }

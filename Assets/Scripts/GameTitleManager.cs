@@ -10,7 +10,7 @@ namespace FromAPikarmy
 		[SerializeField] private Button _volumeSettingButton;
 		[SerializeField] private Button _creditButton;
 		[SerializeField] private GameObject _instructionWindow;
-		[SerializeField] private GameObject _volumeSettingWindow;
+		[SerializeField] private UIAudioSetting _volumeSettingWindow;
 		[SerializeField] private GameObject _creditWindow;
 
 		private int _gamePlaySceneID = 2;
@@ -35,7 +35,7 @@ namespace FromAPikarmy
 
 		private void OpenVolumeSetting()
 		{
-			_volumeSettingWindow.SetActive(true);
+			_volumeSettingWindow.Open();
 		}
 
 		private void OpenCreditWindow()

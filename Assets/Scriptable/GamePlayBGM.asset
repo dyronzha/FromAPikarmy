@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a156fff17dbf648a222eafbee34fea, type: 3}
+  m_Name: GamePlayBGM
+  m_EditorClassIdentifier: 
+  AudioDatas:
+  - ID: 0
+    Name: GamePlay
+    Clip: {fileID: 8300000, guid: e3790b10b3e320d42ae49e6e5b1dfdd3, type: 3}
+    EnableRandomPitch: 0
+    RandomPitchRange: {x: 0, y: 0}
+  - ID: 1
+    Name: GameEnd
+    Clip: {fileID: 8300000, guid: e70ca1672731c8747bed843b6b529a69, type: 3}
+    EnableRandomPitch: 0
+    RandomPitchRange: {x: 0, y: 0}

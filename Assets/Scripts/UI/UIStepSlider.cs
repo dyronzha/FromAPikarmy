@@ -11,6 +11,7 @@ namespace FromAPikarmy
 		[SerializeField] private int _stepValue;
 		[SerializeField] private Text _valueText;
 
+		private bool _hasInit;
 		private int _stepCount;
 		private int _oringinMin;
 		private int _oringinMax;
@@ -21,6 +22,7 @@ namespace FromAPikarmy
 			get => _finalValue;
 			set
 			{
+				Init();
 				base.value = Mathf.RoundToInt((value - _oringinMin) / _stepValue);
 			}
 		}
@@ -30,16 +32,27 @@ namespace FromAPikarmy
 			base.Awake();
 			if (Application.isPlaying)
 			{
-				var oringinValue = base.value;
-				_oringinMin = (int)minValue;
-				_oringinMax = (int)maxValue;
-				_stepCount = Mathf.RoundToInt((maxValue - minValue) / _stepValue);
-				minValue = 0;
-				maxValue = _stepCount;
-				base.value = Mathf.RoundToInt((oringinValue - _oringinMin) / _stepValue);
-				TransStepValue(base.value);
-				base.onValueChanged.AddListener(TransStepValue);
+				Init();
 			}
+		}
+
+		private void Init()
+		{
+			if (_hasInit)
+			{
+				return;
+			}
+			_hasInit = true;
+
+			var oringinValue = base.value;
+			_oringinMin = (int)minValue;
+			_oringinMax = (int)maxValue;
+			_stepCount = Mathf.RoundToInt((maxValue - minValue) / _stepValue);
+			minValue = 0;
+			maxValue = _stepCount;
+			base.value = Mathf.RoundToInt((oringinValue - _oringinMin) / _stepValue);
+			TransStepValue(base.value);
+			base.onValueChanged.AddListener(TransStepValue);
 		}
 
 		private void TransStepValue(float newValue)

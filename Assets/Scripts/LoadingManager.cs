@@ -16,7 +16,7 @@ namespace FromAPikarmy
 		private float _barMinX;
 		private float _barMaxX;
 		private Vector2 _percentTextPos;
-		private string _percentFormat = "Loading progress: {0}%";
+		private string _percentFormat = "{0}%";
 
 		public static void LoadScene(int id)
 		{

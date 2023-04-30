@@ -20,6 +20,8 @@ namespace FromAPikarmy
 		[SerializeField]private AudioSource _sfxAudioSource;
 
 		private bool _hasInit;
+		private bool _fadeOutBGM;
+		private float _bgmFadeOutDeltaTime;
 
 		private static AudioManager _instance;
 
@@ -27,8 +29,9 @@ namespace FromAPikarmy
 		private static float _musicVolume = 0.5f;
 		private static float _sfxVolume = 0.5f;
 
-		public float BGMVolume => _musicVolume;
-		public float SFXVolume => _sfxVolume;
+		public int MasterVolumePercent => ConvertVolumeToPercent(_masterVolume);
+		public int BGMVolumePercent => ConvertVolumeToPercent(_musicVolume);
+		public int SFXVolumePercent => ConvertVolumeToPercent(_sfxVolume);
 
 		public static AudioManager Instance
 		{
@@ -46,7 +49,7 @@ namespace FromAPikarmy
 		public void ChangeMasterVolumeByPercent(int percentValue)
 		{
 
-			var value = ConvertVolumePercent(percentValue);
+			var value = ConvertVolumeFromPercent(percentValue);
 			ChangeMasterVolume(value);
 		}
 
@@ -68,9 +71,8 @@ namespace FromAPikarmy
 
 		public void ChangeMusicVolumeByPercent(int percentValue)
 		{
-			var value = ConvertVolumePercent(percentValue);
+			var value = ConvertVolumeFromPercent(percentValue);
 			ChangeMusicVolume(value);
-			Debug.LogError($"change music volume percent {percentValue} -> {_musicVolume}");
 		}
 
 		public void ChangeMusicVolume(float value)
@@ -85,13 +87,12 @@ namespace FromAPikarmy
 			{
 				_bgmAudioSource.mute = true;
 			}
-			Debug.LogError($"change music volume {Mathf.Lerp(_musicVolumeRange.x, _musicVolumeRange.y, _musicVolume)}");
 		}
 
 		public void ChangeSFXVolumeByPercent(int percentValue)
 		{
 
-			var value = Mathf.Clamp01(ConvertVolumePercent(percentValue));
+			var value = Mathf.Clamp01(ConvertVolumeFromPercent(percentValue));
 			ChangeSFXVolume(value);
 		}
 
@@ -109,9 +110,14 @@ namespace FromAPikarmy
 			}
 		}
 
-		private float ConvertVolumePercent(int value)
+		private float ConvertVolumeFromPercent(int value)
 		{
 			return value * 0.01f;
+		}
+
+		private int ConvertVolumeToPercent(float value)
+		{
+			return Mathf.RoundToInt(value * 100);
 		}
 
 		public void PlaySFX(int id)
@@ -126,22 +132,36 @@ namespace FromAPikarmy
 				{
 					_sfxAudioSource.pitch = 1f;
 				}
-				Debug.LogError($"play sound {data.Name}");
 				_sfxAudioSource.PlayOneShot(data.Clip);
 			}
 		}
 
-		private void Update()
+		public void ChangeBGM(int id)
 		{
-			if (Input.GetKeyDown(KeyCode.Space))
+			if (_bgmTable.Datas.TryGetValue(id, out var data))
 			{
-				PlaySFX(0);
+				_bgmAudioSource.clip = data.Clip;
+				_bgmAudioSource.Play();
 			}
+		}
+
+		public void FadeOutBGM(float secinds)
+		{
+			_fadeOutBGM = true;
+			_bgmFadeOutDeltaTime = Time.deltaTime / secinds;
 		}
 
 		private void Awake()
 		{
 			Init();
+		}
+
+		private void Update()
+		{
+			if (_fadeOutBGM)
+			{
+				_bgmAudioSource.volume -= _bgmFadeOutDeltaTime;
+			}
 		}
 
 		private void OnDestroy()
@@ -157,7 +177,14 @@ namespace FromAPikarmy
 			}
 			_hasInit = true;
 			_instance = this;
-			_sfxTable.CreateTable();
+			if (_bgmTable)
+			{
+				_bgmTable.CreateTable();
+			}
+			if (_sfxTable)
+			{
+				_sfxTable.CreateTable();
+			}
 			StartCoroutine(DelayInitVolume());
 		}
 
