@@ -156,6 +156,7 @@ MonoBehaviour:
   _player: {fileID: 1153096225}
   _denkiManager: {fileID: 611180105}
   _donutManager: {fileID: 1423598019}
+  _reeseManager: {fileID: 231581399}
   _uiManager: {fileID: 477259595}
   _UIAni: {fileID: 477259596}
 --- !u!4 &4596016
@@ -1442,6 +1443,56 @@ RectTransform:
   m_AnchoredPosition: {x: 154.94995, y: 10}
   m_SizeDelta: {x: 70.3, y: 65.611}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &231581398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 231581400}
+  - component: {fileID: 231581399}
+  m_Layer: 0
+  m_Name: ReeseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &231581399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231581398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc1342eb584178488d9a38c67830058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxPerSpawmCount: 1
+  _maxImmediatelySpawmCount: 1
+  _spawnRangeTime: {x: 3, y: 4}
+  _spawnGapRangeTime: {x: 1, y: 1.5}
+  _spawnPosition: {x: 20, y: 0, z: 0}
+  _donutPrefab: {fileID: 3856131292284994401, guid: 973463e046377884fa0cd9d9501fc25f, type: 3}
+  _player: {fileID: 1153096225}
+--- !u!4 &231581400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231581398}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &266827970
 GameObject:
   m_ObjectHideFlags: 0
@@ -4244,7 +4295,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1026411232
 GameObject:
@@ -5241,7 +5292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dc1342eb584178488d9a38c67830058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxPerSpawmCount: 5
+  _maxPerSpawmCount: 4
   _maxImmediatelySpawmCount: 2
   _spawnRangeTime: {x: 1, y: 1.6}
   _spawnGapRangeTime: {x: 0.1, y: 0.4}
@@ -6064,7 +6115,7 @@ Transform:
   - {fileID: 33258007}
   - {fileID: 184155398}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1642169222
 GameObject:

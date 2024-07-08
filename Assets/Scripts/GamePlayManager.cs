@@ -7,6 +7,7 @@ namespace FromAPikarmy
 		[SerializeField] private Player _player;
 		[SerializeField] private DenkiManager _denkiManager;
 		[SerializeField] private DonutManager _donutManager;
+		[SerializeField] private DonutManager _reeseManager;
 		[SerializeField] private UIManager _uiManager;
 		[SerializeField] private Animator _UIAni;
 
@@ -76,13 +77,13 @@ namespace FromAPikarmy
 					_uiManager.SratrEndScroll(_score);
 					_player.SetEnd();
 					_donutManager.SetEnd();
+					_reeseManager.SetEnd();
 					AudioManager.Instance.ChangeBGM(1);
 					End = true;
 				}
 			}
 			else if (_waitLeave)
 			{
-				
 				if (!BoundaryManager.Instance.CheckPositionInArea(_player.Position))
 				{
 					LoadingManager.LoadScene(_titleSceneIndex);
