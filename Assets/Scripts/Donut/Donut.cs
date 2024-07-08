@@ -5,6 +5,7 @@ namespace FromAPikarmy
 {
 	public class Donut : MonoBehaviour
 	{
+		[SerializeField] private int _eatenValue = 1;
 		[SerializeField] private float _startOffset;
 		[SerializeField] private float _moveSpeed;
 		[SerializeField] [Range(0, 10)] private int _rambleOpportunity;
@@ -28,7 +29,9 @@ namespace FromAPikarmy
 		private Vector3 _rambleDir;
 		private Vector3 _lastRambleDir;
 
-		public Bounds _eatenArea;
+		private Vector2[] _eatenAreaVertics = new Vector2[4];
+		private Bounds _eatenArea;
+
 
 		private Action _currentState;
 		private Action _moveInState;
@@ -38,14 +41,21 @@ namespace FromAPikarmy
 
 		private DonutManager _donutManager;
 
+		public int EatenValue => _eatenValue;
 		public Vector3 Position => _position;
+		public Vector2[] EatenAreaVertics => _eatenAreaVertics;
 		public Bounds EatenArea => _eatenArea;
+
 
 		private float DeltaTime => Time.deltaTime;
 
 		public void Init(DonutManager donutManager)
 		{
 			_eatenArea = new Bounds(_collider.bounds.center, _collider.bounds.size) ;
+			_eatenAreaVertics[0] = _eatenArea.min;
+			_eatenAreaVertics[2] = _eatenArea.max;
+			_eatenAreaVertics[1] = new Vector2(_eatenAreaVertics[0].x, _eatenAreaVertics[2].y);
+			_eatenAreaVertics[3] = new Vector2(_eatenAreaVertics[2].x, _eatenAreaVertics[0].y);
 			_collider.enabled = false;
 			_donutManager = donutManager;
 			_moveInState = OnMoveIn;
@@ -208,6 +218,10 @@ namespace FromAPikarmy
 			Vector2 min = new Vector2(_position.x - _eatenArea.extents.x, _position.y - _eatenArea.extents.y);
 			Vector2 max = new Vector2(_position.x + _eatenArea.extents.x, _position.y + _eatenArea.extents.y);
 			_eatenArea.SetMinMax(min, max);
+			_eatenAreaVertics[0] = _eatenArea.min;
+			_eatenAreaVertics[2] = _eatenArea.max;
+			_eatenAreaVertics[1] = new Vector2(_eatenAreaVertics[0].x, _eatenAreaVertics[2].y);
+			_eatenAreaVertics[3] = new Vector2(_eatenAreaVertics[2].x, _eatenAreaVertics[0].y);
 		}
 
 		public void SetEaten()

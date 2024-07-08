@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +14,7 @@ namespace FromAPikarmy
 		[SerializeField] private Player _player;
 
 		private int _frameEatenCount;
+		private int _frameEatenValue;
 		private float _spawnTimer;
 		private float _spawnGapTimer;
 		private float _spawnTime;
@@ -38,19 +38,28 @@ namespace FromAPikarmy
 			if (eatenArea.Intersects(_player.EatArea))
 			{
 				_frameEatenCount++;
+				_frameEatenValue += donut.EatenValue;
 				return true;
 			}
 			else
 			{
 				foreach (var dash in _player.DashEats)
 				{
-					var diff = dash.Point2 - dash.Point1;
-					Ray ray = new Ray(dash.Point1, diff.normalized);
-					if (eatenArea.IntersectRay(ray, out float distance) && distance * distance <= diff.sqrMagnitude)
+					if (dash.CheckOverlap(donut.EatenArea.center, donut.EatenAreaVertics))
 					{
 						_frameEatenCount++;
+						_frameEatenValue += donut.EatenValue;
 						return true;
 					}
+
+					//var diff = dash.Point2 - dash.Point1;
+					//Ray ray = new Ray(dash.Point1, diff.normalized);
+					//if (eatenArea.IntersectRay(ray, out float distance) && distance * distance <= diff.sqrMagnitude)
+					//{
+					//	_frameEatenCount++;
+					//	_frameEatenValue += donut.EatenValue;
+					//	return true;
+					//}
 				}
 				return false;
 			}
@@ -73,26 +82,26 @@ namespace FromAPikarmy
 		}
 
 		private void Update()
-		{			
+		{
 			if (GamePlayManager.Instance.StopUpdate)
 			{
 				return;
 			}
-
 			_spawnTimer += Time.deltaTime;
 			_spawnGapTimer += Time.deltaTime;
 			if (_spawnTimer >= _spawnTime)
 			{
 				_spawnTimer = 0;
 				_spawnTime = Random.Range(_spawnRangeTime.x, _spawnRangeTime.y);
-				int amount = Random.Range(1, _maxPerSpawmCount);
+				int amount = Random.Range(1, _maxPerSpawmCount + 1);
 				_waitingDonutsAmount += amount;
 			}
 
 			if (_waitingDonutsAmount > 0 && _spawnGapTimer >= _spawnGapTime)
 			{
+				_spawnGapTime = Random.Range(_spawnGapRangeTime.x, _spawnGapRangeTime.y);
 				_spawnGapTimer = 0;
-				int amount = Random.Range(0, Mathf.Min(_waitingDonutsAmount, _maxImmediatelySpawmCount));
+				int amount = Random.Range(0, Mathf.Min(_waitingDonutsAmount, _maxImmediatelySpawmCount) + 1);
 				for (int i = 0; i < amount; i++)
 				{
 					var donut = SpawnDonut();
@@ -111,8 +120,8 @@ namespace FromAPikarmy
 		{
 			if (_frameEatenCount > 0)
 			{
-				_player.EatDonut(_frameEatenCount);
-				_frameEatenCount = 0;
+				_player.EatDonut(_frameEatenCount, _frameEatenValue);
+				_frameEatenCount = _frameEatenValue = 0;
 			}
 		}
 

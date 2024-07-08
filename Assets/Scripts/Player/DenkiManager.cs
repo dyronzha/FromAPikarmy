@@ -25,13 +25,12 @@ namespace FromAPikarmy
 
 		public float CurrentDenki => _currentDenki;
 
-		public void AddDenki(int count)
+		public void AddDenki(Player.EatData eatData)
 		{
-			float value = (_inCombo) ? _perAddDenki * _comboMultipler : _perAddDenki;
-			value *= count;
+			float value = eatData.Value * ((_inCombo) ? _perAddDenki * _comboMultipler : _perAddDenki);
 			_currentDenki = Mathf.Clamp(_currentDenki + value, -0.1f,  _maxDenki);
 			_inCombo = true;
-			_comboCount += count;
+			_comboCount += eatData.Count;
 			_comboTimer = 0f;
 			SetComboNumber(_comboCount);
 			GamePlayManager.Instance.AddScore(Mathf.RoundToInt(value));

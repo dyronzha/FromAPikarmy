@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace FromAPikarmy
 {
@@ -12,15 +13,63 @@ namespace FromAPikarmy
 
 	public class DashInfo
 	{
+		private float _checkDistance;
+		private Vector2 _boundsMin;
+		private Vector2 _boundsMax;
+		private Vector2 _direction;
+
 		public Vector2 Point1 { get; private set; }
 		public Vector2 Point2 { get; private set; }
 		public float RemainTime { get; private set; }
 
-		public void Init(Vector2 p1, Vector2 p2)
+		public void Init(Vector2 p1, Vector2 p2, float checkDistance)
 		{
+			_boundsMin = _boundsMax = p1;
+			if (p1.x < p2.x)
+			{
+				_boundsMax.x = p2.x;
+			}
+			else
+			{
+				_boundsMin.x = p2.x;
+			}
+			if (p1.y < p2.y)
+			{
+				_boundsMax.y = p2.y;
+			}
+			else
+			{
+				_boundsMin.y = p2.y;
+			}
+			_checkDistance = checkDistance;
+			_direction = p2 - p1;
 			Point1 = p1;
 			Point2 = p2;
 			RemainTime = 0;
+		}
+
+		public bool CheckOverlap(Vector2 targetCenter, Vector2[] targetBox)
+		{
+			if ((targetCenter.x > _boundsMax.x || targetCenter.x < _boundsMin.x)
+				&& (targetCenter.y > _boundsMax.y || targetCenter.y < _boundsMin.y))
+			{
+				return false;
+			}
+			int length = targetBox.Length;
+			var normal = Vector2.Perpendicular(_direction);
+			for (int i = 0; i < length; i++)
+			{
+				var target = targetBox[i];
+				
+
+				var vector = target - Point1;
+				float dist = vector.GetProjectLengthOnAxis(normal);
+				if (dist <= _checkDistance)
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		public float UpdaeTime(float deltaTime)
@@ -32,18 +81,22 @@ namespace FromAPikarmy
 
 	public class Player : MonoBehaviour
 	{
+		public struct EatData
+		{
+			public int Count;
+			public int Value;
+		}
 
 		[SerializeField] private float _moveSpeed;
+		[SerializeField] private float _dashDetectDistance;
 		[SerializeField] private SpriteRenderer _sprite;
 		[SerializeField] private BoxCollider2D _collider;
 		[SerializeField] private PikameeAnimationModule _animationModule;
 		[SerializeField] private LineRenderer _dashHint;
 		[SerializeField] private TomoeManager _tomoeManager;
 		[SerializeField] private DashEffectManager _dashEffectManager;
-		[SerializeField] private DonutManager _donutManager;
 		[SerializeField] private DenkiManager _denkiManager;
 		[SerializeField] private GameObject _byebye;
-
 
 		private int _waitUpdateDashCounter = 3;
 		private int _lastDashHintCount;
@@ -53,6 +106,7 @@ namespace FromAPikarmy
 		private Vector3 _position;
 		private Vector3 _startPos;
 		private Bounds _eatArea;
+		private EatData _eatData;
 		private PlayerInputModule _inputModule;
 		private List<DashInfo> _dashInfos = new List<DashInfo>();
 
@@ -68,11 +122,13 @@ namespace FromAPikarmy
 
 		private float DeltaTime => Time.deltaTime;
 
-		public void EatDonut(int count)
+		public void EatDonut(int eatCount, int eatValue)
 		{
 			AudioManager.Instance.PlaySFX(3);
 			_animationModule.PlayEat();
-			_denkiManager.AddDenki(count);
+			_eatData.Count = eatCount;
+			_eatData.Value = eatValue;
+			_denkiManager.AddDenki(_eatData);
 		}
 
 		public void SetEnd()
@@ -161,7 +217,7 @@ namespace FromAPikarmy
 			var nextPosition = new Vector3(tomoe.Position.x, tomoe.Position.y, _position.z);
 			_dashEffectManager.ShowDashEffect(_position, nextPosition);
 			var dashInfo = ObjectReusePool<DashInfo>.Spawn();
-			dashInfo.Init(_position, nextPosition);
+			dashInfo.Init(_position, nextPosition, _dashDetectDistance);
 			_dashInfos.Add(dashInfo);
 			_tomoeManager.PickTomoe(false, tomoe);
 			_position = nextPosition;
