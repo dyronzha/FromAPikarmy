@@ -1,3 +1,4 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace FromAPikarmy
@@ -7,12 +8,13 @@ namespace FromAPikarmy
 	{
 		[SerializeField] private string _eatName;
 		[SerializeField] private string _eatParameter;
+		[SerializeField] private Animator _animator;
+		[SerializeField] private RuntimeAnimatorController[] _skinAni;
 
 		private bool _eatingDonut;
 		private int _eatNameHash;
 		private int _eatParameterHash;
 		private float _eatingTimer;
-		private Animator _animator;
 
 		public void PlayEat()
 		{
@@ -26,7 +28,7 @@ namespace FromAPikarmy
 
 		private void Awake()
 		{
-			_animator = GetComponent<Animator>();
+			_animator.runtimeAnimatorController = _skinAni[(int)SkinManager.Instance.Skin];
 			_eatNameHash = Animator.StringToHash(_eatName);
 			_eatParameterHash = Animator.StringToHash(_eatParameter);
 		}
