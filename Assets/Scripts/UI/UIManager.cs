@@ -115,7 +115,7 @@ namespace FromAPikarmy
 				{
 					_animator.speed = 10f;
 				}
-				else if (_inputModule.EndTextFastForward)
+				else if (_inputModule.EndTextStop)
 				{
 					_animator.speed = 0;
 				}
