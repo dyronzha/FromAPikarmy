@@ -199,13 +199,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 8
+  _dashDetectDistance: 1.2
   _sprite: {fileID: 3049502987003623420}
   _collider: {fileID: 138802255195014784}
   _animationModule: {fileID: 591161133978858912}
   _dashHint: {fileID: 3049502986579197376}
   _tomoeManager: {fileID: 0}
   _dashEffectManager: {fileID: 0}
-  _donutManager: {fileID: 0}
   _denkiManager: {fileID: 0}
   _byebye: {fileID: 9014338573580285787}
 --- !u!114 &591161133978858912
@@ -222,6 +222,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _eatName: PikameeEat
   _eatParameter: Eating
+  _animator: {fileID: 8539480718011524033}
+  _skinAni:
+  - {fileID: 9100000, guid: a506a1cf5dbf10c42a3f093f092afea0, type: 2}
+  - {fileID: 22100000, guid: feb824604049040418c738c65b867d8e, type: 2}
 --- !u!61 &138802255195014784
 BoxCollider2D:
   m_ObjectHideFlags: 0
