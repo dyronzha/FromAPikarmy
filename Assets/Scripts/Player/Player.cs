@@ -96,7 +96,8 @@ namespace FromAPikarmy
 		[SerializeField] private TomoeManager _tomoeManager;
 		[SerializeField] private DashEffectManager _dashEffectManager;
 		[SerializeField] private DenkiManager _denkiManager;
-		[SerializeField] private GameObject _byebye;
+		[SerializeField] private SpecialMoveModule _specialMoveModule;
+        [SerializeField] private GameObject _byebye;
 
 		private int _waitUpdateDashCounter = 3;
 		private int _lastDashHintCount;
@@ -129,6 +130,7 @@ namespace FromAPikarmy
 			_eatData.Count = eatCount;
 			_eatData.Value = eatValue;
 			_denkiManager.AddDenki(_eatData);
+			_specialMoveModule.AddEnergy(_eatData);
 		}
 
 		public void SetEnd()
@@ -166,11 +168,7 @@ namespace FromAPikarmy
 			{
 				return;
 			}
-
-			_position = transform.position;
-
 			_currentState?.Invoke();
-
 			UpdateTransform();
 			UpdateDashHint();
 			HandleDashInfos();
@@ -201,7 +199,8 @@ namespace FromAPikarmy
 			{
 				Move();
 				Shoot();
-			}
+				TriggerSpecialMove();
+            }
 		}
 
 		private bool DoingDash()
@@ -241,6 +240,14 @@ namespace FromAPikarmy
 
 				_tomoeManager.ShootTomoe(fromPos, targetPos);
 
+			}
+		}
+
+		private void TriggerSpecialMove()
+		{
+			if (_inputModule.SpecialMoveInput && _specialMoveModule)
+			{
+				_specialMoveModule.TriggerOn();
 			}
 		}
 

@@ -26,6 +26,7 @@ namespace FromAPikarmy
 		public bool EndTextFastForward { get; private set; }
 		public bool EndTextStop { get; private set; }
 		public bool BulletTimeInput { get; private set; }
+		public bool SpecialMoveInput { get; private set; }
 		public Vector2 MoveDir { get; private set; }
 
 		#endregion
@@ -45,7 +46,8 @@ namespace FromAPikarmy
 			ShootTargetPos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
 			MoveDir = GetMoveVector();
 			BulletTimeInput = Input.GetKey(KeyCode.Space);
-		}
+            SpecialMoveInput = Input.GetKey(KeyCode.Q);
+        }
 
 		public void Clear()
 		{

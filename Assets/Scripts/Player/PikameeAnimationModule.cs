@@ -1,4 +1,3 @@
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace FromAPikarmy
@@ -8,13 +7,19 @@ namespace FromAPikarmy
 	{
 		[SerializeField] private string _eatName;
 		[SerializeField] private string _eatParameter;
-		[SerializeField] private Animator _animator;
+        [SerializeField] private string _kettleReadyParameter;
+        [SerializeField] private string _kettleLaughParameter;
+        [SerializeField] private string _kettleLaughEndParameter;
+        [SerializeField] private Animator _animator;
 		[SerializeField] private RuntimeAnimatorController[] _skinAni;
 
 		private bool _eatingDonut;
 		private int _eatNameHash;
 		private int _eatParameterHash;
-		private float _eatingTimer;
+        private int _kettleReadyParameterHash;
+        private int _kettleLaughParameterHash;
+        private int _kettleLaughEndParameterHash;
+        private float _eatingTimer;
 
 		public void PlayEat()
 		{
@@ -26,12 +31,30 @@ namespace FromAPikarmy
 			_animator.SetBool(_eatParameterHash, true);
 		}
 
-		private void Awake()
+		public void PlayKettleReady()
+		{
+            _animator.SetTrigger(_kettleReadyParameterHash);
+        }
+
+        public void PlayKettleLaugh()
+        {
+            _animator.SetTrigger(_kettleLaughParameterHash);
+        }
+
+		public void EndKettleLaugh()
+		{
+            _animator.SetTrigger(_kettleLaughEndParameterHash);
+        }
+
+        private void Awake()
 		{
 			_animator.runtimeAnimatorController = _skinAni[(int)SkinManager.Instance.Skin];
 			_eatNameHash = Animator.StringToHash(_eatName);
 			_eatParameterHash = Animator.StringToHash(_eatParameter);
-		}
+            _kettleReadyParameterHash = Animator.StringToHash(_kettleReadyParameter);
+            _kettleLaughParameterHash = Animator.StringToHash(_kettleLaughParameter);
+            _kettleLaughEndParameterHash = Animator.StringToHash(_kettleLaughEndParameter);
+        }
 
 		private void LateUpdate()
 		{
