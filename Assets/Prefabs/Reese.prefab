@@ -256,6 +256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3856131292284994402}
   - component: {fileID: 3856131292284994403}
+  - component: {fileID: 3111859804845827414}
   - component: {fileID: 8242246574647120318}
   - component: {fileID: 3943442089534566757}
   - component: {fileID: 3856131292284994400}
@@ -296,17 +297,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b6946f057de01478a60b73551b4c8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _eatenValue: 3
+  _eatenValue: 5
+  _spawnLocationType: 0
   _startOffset: 4
-  _moveSpeed: 15
+  _behavior: {fileID: 3111859804845827414}
+  _moveSpeed: 12
   _rambleOpportunity: 8
   _idleRangetime: {x: 0.3, y: 0.6}
   _rambleRangeTime: {x: 1, y: 1.6}
   _rambleChangeDirRangeTime: {x: 0.1, y: 0.3}
   _spriteTransform: {fileID: 3856131292076292784}
   _familyFriendlySprite: {fileID: 2357002410479153536}
-  _animationModule: {fileID: 8242246574647120318}
   _collider: {fileID: 3856131292284994400}
+--- !u!114 &3111859804845827414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3856131292284994401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f776ddc7c59b2e4fb702157e18238a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 12
+  _rambleOpportunity: 8
+  _idleRangetime: {x: 0.3, y: 0.6}
+  _rambleRangeTime: {x: 1, y: 1.6}
+  _rambleChangeDirRangeTime: {x: 0.1, y: 0.3}
+  _animationModule: {fileID: 8242246574647120318}
 --- !u!114 &8242246574647120318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,7 +368,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.8310447}
+  m_Offset: {x: 0, y: 1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -359,7 +379,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5739183, y: 1.6620893}
+  m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
 --- !u!95 &8239783171854260599
 Animator:

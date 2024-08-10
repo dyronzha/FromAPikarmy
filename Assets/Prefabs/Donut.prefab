@@ -174,6 +174,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2788860711541200799}
   - component: {fileID: 2788860711541200798}
+  - component: {fileID: 9103725780341858509}
   - component: {fileID: 7013770824152450371}
   - component: {fileID: 2706196494441424280}
   - component: {fileID: 2788860711541200797}
@@ -214,19 +215,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b6946f057de01478a60b73551b4c8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eatenValue: 1
+  _spawnLocationType: 0
   _startOffset: 4
-  _moveSpeed: 10
+  _behavior: {fileID: 9103725780341858509}
+  _moveSpeed: 8
   _rambleOpportunity: 8
   _idleRangetime: {x: 0.4, y: 0.8}
   _rambleRangeTime: {x: 0.8, y: 1.6}
   _rambleChangeDirRangeTime: {x: 0.2, y: 0.5}
   _spriteTransform: {fileID: 2788860713360633421}
   _familyFriendlySprite: {fileID: 3711667324206966141}
-  _animationModule: {fileID: 7013770824152450371}
   _collider: {fileID: 2788860711541200797}
-  _eatenArea:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+--- !u!114 &9103725780341858509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2788860711541200796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f776ddc7c59b2e4fb702157e18238a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 8
+  _rambleOpportunity: 8
+  _idleRangetime: {x: 0.4, y: 0.8}
+  _rambleRangeTime: {x: 0.8, y: 1.6}
+  _rambleChangeDirRangeTime: {x: 0.2, y: 0.5}
+  _animationModule: {fileID: 7013770824152450371}
 --- !u!114 &7013770824152450371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,7 +286,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.8310447}
+  m_Offset: {x: 0, y: 1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -279,7 +297,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5739183, y: 1.6620893}
+  m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
 --- !u!95 &7020597055227940234
 Animator:
