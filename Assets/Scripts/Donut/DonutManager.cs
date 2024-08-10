@@ -101,7 +101,7 @@ namespace FromAPikarmy
 			{
 				_spawnGapTime = Random.Range(_spawnGapRangeTime.x, _spawnGapRangeTime.y);
 				_spawnGapTimer = 0;
-				int amount = Random.Range(0, Mathf.Min(_waitingDonutsAmount, _maxImmediatelySpawmCount) + 1);
+				int amount = Random.Range(1, Mathf.Min(_waitingDonutsAmount, _maxImmediatelySpawmCount) + 1);
 				for (int i = 0; i < amount; i++)
 				{
 					var donut = SpawnDonut();

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace FromAPikarmy
 {
-	[RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(Animator))]
 	public class DonutAnimationModule : MonoBehaviour
 	{
 		[SerializeField] private string _idleName;
@@ -15,11 +15,28 @@ namespace FromAPikarmy
 		private int _eatenNameHashID;
 		private Animator _animator;
 
+		private Animator Animator
+		{
+			get
+			{
+				if (_animator == null)
+				{
+					_animator = GetComponent<Animator>();
+				}
+				return _animator;
+			}
+		}
+        public void Init()
+        {
+            _idleNameHashID = Animator.StringToHash(_idleName);
+            _runNameHashID = Animator.StringToHash(_runName);
+            _eatenNameHashID = Animator.StringToHash(_eatenName);
+        }
 
-		public void PlayIdle()
+        public void PlayIdle()
 		{
 			_isRun = false;
-			_animator.Play(_idleNameHashID, 0);
+			Animator.Play(_idleNameHashID, 0);
 		}
 
 		public void PlayRun()
@@ -29,20 +46,12 @@ namespace FromAPikarmy
 				return;
 			}
 			_isRun = true;
-			_animator.Play(_runNameHashID, 0);
+			Animator.Play(_runNameHashID, 0);
 		}
 
 		public void PlayEaten()
 		{
-			_animator.Play(_eatenNameHashID, 0);
-		}
-
-		private void Awake()
-		{
-			_animator = GetComponent<Animator>();
-			_idleNameHashID = Animator.StringToHash(_idleName);
-			_runNameHashID = Animator.StringToHash(_runName);
-			_eatenNameHashID = Animator.StringToHash(_eatenName);
+			Animator.Play(_eatenNameHashID, 0);
 		}
 	}
 }

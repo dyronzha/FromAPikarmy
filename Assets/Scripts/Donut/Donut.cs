@@ -5,39 +5,24 @@ namespace FromAPikarmy
 {
 	public class Donut : MonoBehaviour
 	{
+		public enum SpawnLocation
+		{
+			Forward,
+			Backward,
+			Random,
+		}	
+
 		[SerializeField] private int _eatenValue = 1;
+		[SerializeField] private SpawnLocation _spawnLocationType = SpawnLocation.Forward;
 		[SerializeField] private float _startOffset;
-		[SerializeField] private float _moveSpeed;
-		[SerializeField] [Range(0, 10)] private int _rambleOpportunity;
-		[SerializeField] private Vector2 _idleRangetime;
-		[SerializeField] private Vector2 _rambleRangeTime;
-		[SerializeField] private Vector2 _rambleChangeDirRangeTime;
+		[SerializeField] private DonutBehavior _behavior;
 		[SerializeField] private Transform _spriteTransform;
 		[SerializeField] private SpriteRenderer _familyFriendlySprite;
-		[SerializeField] private DonutAnimationModule _animationModule;
 		[SerializeField] private BoxCollider2D _collider;
 
-		private int _faceDir = -1;
-
-		private float _stateTimer;
-		private float _idleTime;
-		private float _rambleTime;
-		private float _rambleChangeDirTime;
-
 		private Vector3 _position;
-		private Vector3 _moveInDir;
-		private Vector3 _rambleDir;
-		private Vector3 _lastRambleDir;
-
 		private Vector2[] _eatenAreaVertics = new Vector2[4];
 		private Bounds _eatenArea;
-
-
-		private Action _currentState;
-		private Action _moveInState;
-		private Action _idleState;
-		private Action _endState;
-		private Action _rambleState;
 
 		private DonutManager _donutManager;
 
@@ -45,9 +30,6 @@ namespace FromAPikarmy
 		public Vector3 Position => _position;
 		public Vector2[] EatenAreaVertics => _eatenAreaVertics;
 		public Bounds EatenArea => _eatenArea;
-
-
-		private float DeltaTime => Time.deltaTime;
 
 		public void Init(DonutManager donutManager)
 		{
@@ -58,14 +40,11 @@ namespace FromAPikarmy
 			_eatenAreaVertics[3] = new Vector2(_eatenAreaVertics[2].x, _eatenAreaVertics[0].y);
 			_collider.enabled = false;
 			_donutManager = donutManager;
-			_moveInState = OnMoveIn;
-			_idleState = OnIdle;
-			_rambleState = OnRamble;
+			_behavior.Init();
 		}
 
 		public void Reset()
 		{
-			_currentState = null;
 			transform.rotation = Quaternion.identity;
 			_spriteTransform.localScale = Vector3.one;
 			_familyFriendlySprite.enabled = false;
@@ -74,8 +53,15 @@ namespace FromAPikarmy
 
 		public void SetSpawn()
 		{
-			SetMoveIn();
 			gameObject.SetActive(true);
+			var startPosX = BoundaryManager.Instance.MaxPoint.x + _startOffset;
+			if (_spawnLocationType == SpawnLocation.Backward)
+			{
+				startPosX = BoundaryManager.Instance.MinPoint.x - _startOffset;
+			}
+			var startPosY = UnityEngine.Random.Range(BoundaryManager.Instance.MinPoint.y, BoundaryManager.Instance.MaxPoint.y);
+			_position.Set(startPosX, startPosY, Position.z);
+			_behavior.SetMoveIn(_spawnLocationType, _position);
 		}
 
 		private void Update()
@@ -86,103 +72,13 @@ namespace FromAPikarmy
 			}
 			if (OnScrolling())
 			{
-				_currentState?.Invoke();
-				UpdateTransform();
-			}
-		}
-
-		private void SetMoveIn()
-		{
-			_currentState = _moveInState;
-			_stateTimer = 0;
-			var startPosX = BoundaryManager.Instance.MaxPoint.x + _startOffset;
-			var startPosY = UnityEngine.Random.Range(BoundaryManager.Instance.MinPoint.y, BoundaryManager.Instance.MaxPoint.y);
-			_position.Set(startPosX, startPosY, Position.z);
-
-			float dirY = UnityEngine.Random.Range(-1,1);
-			_moveInDir = new Vector2(-1, dirY).normalized;
-			_lastRambleDir = _moveInDir;
-		}
-
-		private void OnMoveIn()
-		{
-			_position += _moveSpeed * DeltaTime * _moveInDir;
-			_position.Set(_position.x, BoundaryManager.Instance.ClampPositionY(_position.y), _position.z);
-			if (BoundaryManager.Instance.CheckPositionInArea(_position))
-			{
-				RandomIdleRamble();
-			}
-			DetectEaten();
-		}
-
-		private void SetIdle()
-		{
-			_stateTimer = 0;
-			_currentState = _idleState;
-			_idleTime = UnityEngine.Random.Range(_idleRangetime.x, _idleRangetime.y);
-			_animationModule.PlayIdle();
-		}
-
-		private void OnIdle()
-		{
-			_stateTimer += DeltaTime;
-			if (_stateTimer > _idleTime)
-			{
-				RandomIdleRamble();
-			}
-			DetectEaten();
-		}
-
-		private void RandomIdleRamble()
-		{
-			var opp = UnityEngine.Random.Range(0, 10);
-			if (opp <= _rambleOpportunity)
-			{
-				SetRamble();
-			}
-			else
-			{
-				SetIdle();
-			}
-		}
-
-		private void SetRamble()
-		{
-			_stateTimer = 0;
-			_currentState = _rambleState;
-			_rambleTime = UnityEngine.Random.Range(_rambleRangeTime.x, _rambleRangeTime.y);
-			_rambleChangeDirTime = UnityEngine.Random.Range(_rambleChangeDirRangeTime.x, _rambleChangeDirRangeTime.y);
-			_rambleDir = RandomDir();
-			_animationModule.PlayRun();
-		}
-
-		private Vector2 RandomDir()
-		{
-			var newDir = Quaternion.Euler(0, 0, UnityEngine.Random.Range(60, 300)) * Vector2.right;
-			_faceDir = Mathf.RoundToInt(Mathf.Sign(newDir.x));
-			return newDir;
-		}
-
-		private void OnRamble()
-		{
-			_stateTimer += DeltaTime;
-			if (_stateTimer >= _rambleTime)
-			{
-				RandomIdleRamble();
-			}
-			else
-			{
-				if (_stateTimer >= _rambleChangeDirTime)
+				_behavior.UpdateBehavior();
+				if (_behavior.CanBeEaten)
 				{
-					_lastRambleDir = _rambleDir;
-					_rambleDir = RandomDir();
-					_rambleChangeDirTime = _stateTimer + UnityEngine.Random.Range(_rambleChangeDirRangeTime.x, _rambleChangeDirRangeTime.y);
+					DetectEaten();
 				}
-				_lastRambleDir = Vector3.RotateTowards(_lastRambleDir, _rambleDir, 10 * DeltaTime, 0).normalized;
-				_position += DeltaTime * _moveSpeed * _lastRambleDir;
-				_position.Set(_position.x, BoundaryManager.Instance.ClampPositionY(_position.y), _position.z);
 			}
-			DetectEaten();
+			UpdateTransform();
 		}
 
 		private void DetectEaten()
@@ -195,8 +91,7 @@ namespace FromAPikarmy
 
 		private bool OnScrolling()
 		{
-			_position += ScrollingManager.Instance.ScrollVector;
-			if (BoundaryManager.Instance.CheckScrollingOut(_position.x))
+			if (_behavior.OnScroll() && BoundaryManager.Instance.CheckScrollingOut(_position.x))
 			{
 				_donutManager.CleanDonut(this);
 				return false;
@@ -206,48 +101,36 @@ namespace FromAPikarmy
 
 		private void UpdateTransform()
 		{
-			if (_faceDir != 0)
+			_position = _behavior.Position;
+			int dir = _behavior.FaceDir;
+			if (dir != 0)
 			{
 				Vector3 scale = transform.localScale;
-				scale.Set(_faceDir * scale.x, scale.y, scale.z);
+				scale.Set(dir * scale.x, scale.y, scale.z);
 				_spriteTransform.localScale = scale;
-				_faceDir = 0;
 			}
 			transform.position = _position;
 			
-			Vector2 min = new Vector2(_position.x - _eatenArea.extents.x, _position.y - _eatenArea.extents.y);
-			Vector2 max = new Vector2(_position.x + _eatenArea.extents.x, _position.y + _eatenArea.extents.y);
-			_eatenArea.SetMinMax(min, max);
-			_eatenAreaVertics[0] = _eatenArea.min;
-			_eatenAreaVertics[2] = _eatenArea.max;
-			_eatenAreaVertics[1] = new Vector2(_eatenAreaVertics[0].x, _eatenAreaVertics[2].y);
-			_eatenAreaVertics[3] = new Vector2(_eatenAreaVertics[2].x, _eatenAreaVertics[0].y);
+			if (_behavior.CanBeEaten)
+			{
+				Vector2 min = new Vector2(_position.x - _eatenArea.extents.x, _position.y - _eatenArea.extents.y);
+				Vector2 max = new Vector2(_position.x + _eatenArea.extents.x, _position.y + _eatenArea.extents.y);
+				_eatenArea.SetMinMax(min, max);
+				_eatenAreaVertics[0] = _eatenArea.min;
+				_eatenAreaVertics[2] = _eatenArea.max;
+				_eatenAreaVertics[1] = new Vector2(_eatenAreaVertics[0].x, _eatenAreaVertics[2].y);
+				_eatenAreaVertics[3] = new Vector2(_eatenAreaVertics[2].x, _eatenAreaVertics[0].y);
+			}
 		}
 
 		public void SetEaten()
 		{
-			_currentState = null;
-			_animationModule.PlayEaten();
+			_behavior.SetEaten();
 		}
 
 		public void SetEnd()
 		{
-			if (_currentState == null)
-			{
-				return;
-			}
-			_currentState = _endState;
-			_stateTimer = 0;
-
-			float dirY = UnityEngine.Random.Range(-1, 1);
-			_lastRambleDir = new Vector2(-1, dirY).normalized;
-			_animationModule.PlayRun();
-		}
-
-		public void OnEnd()
-		{
-			_position += _moveSpeed * DeltaTime * _lastRambleDir + ScrollingManager.Instance.ScrollVector;
-			_position.Set(_position.x, BoundaryManager.Instance.ClampPositionY(_position.y), _position.z);
+			_behavior.SetEnd();
 		}
 	}
 }
