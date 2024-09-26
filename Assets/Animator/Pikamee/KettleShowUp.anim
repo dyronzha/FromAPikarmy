@@ -89,12 +89,55 @@ AnimationClip:
     path: Kettle
     classID: 1
     script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.35
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_IsActive
+    path: Kettle/Effect
+    classID: 1
+    script: {fileID: 0}
   m_PPtrCurves:
   - curve:
     - time: 0
       value: {fileID: 2879998365708759840, guid: 0ce8823268b4db747a49394ca629a4a1, type: 3}
     attribute: m_Sprite
     path: OshiEnergy/Key
+    classID: 212
+    script: {fileID: 0}
+  - curve:
+    - time: 0.41666666
+      value: {fileID: 3700292194808277242, guid: 160db15e68f00c544beecc881ca3b71a, type: 3}
+    - time: 0.53333336
+      value: {fileID: -5087849252598239568, guid: 160db15e68f00c544beecc881ca3b71a, type: 3}
+    - time: 0.6333333
+      value: {fileID: -9042603785333544692, guid: 160db15e68f00c544beecc881ca3b71a, type: 3}
+    - time: 0.73333335
+      value: {fileID: -1469125244783911487, guid: 160db15e68f00c544beecc881ca3b71a, type: 3}
+    - time: 0.8333333
+      value: {fileID: 480087060962053936, guid: 160db15e68f00c544beecc881ca3b71a, type: 3}
+    attribute: m_Sprite
+    path: Kettle/Effect
     classID: 212
     script: {fileID: 0}
   m_SampleRate: 60
@@ -126,7 +169,21 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
+      path: 1329583996
+      attribute: 2086281974
+      script: {fileID: 0}
+      typeID: 1
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
       path: 2673825697
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - serializedVersion: 2
+      path: 1329583996
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -134,12 +191,17 @@ AnimationClip:
       isPPtrCurve: 1
     pptrCurveMapping:
     - {fileID: 2879998365708759840, guid: 0ce8823268b4db747a49394ca629a4a1, type: 3}
+    - {fileID: 3700292194808277242, guid: 160db15e68f00c544beecc881ca3b71a, type: 3}
+    - {fileID: -5087849252598239568, guid: 160db15e68f00c544beecc881ca3b71a, type: 3}
+    - {fileID: -9042603785333544692, guid: 160db15e68f00c544beecc881ca3b71a, type: 3}
+    - {fileID: -1469125244783911487, guid: 160db15e68f00c544beecc881ca3b71a, type: 3}
+    - {fileID: 480087060962053936, guid: 160db15e68f00c544beecc881ca3b71a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.35
+    m_StopTime: 0.84999996
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -284,6 +346,34 @@ AnimationClip:
       m_RotationOrder: 4
     attribute: m_IsActive
     path: Kettle
+    classID: 1
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.35
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_IsActive
+    path: Kettle/Effect
     classID: 1
     script: {fileID: 0}
   m_EulerEditorCurves: []
