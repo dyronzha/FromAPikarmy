@@ -22,6 +22,7 @@ namespace FromAPikarmy
 		protected Vector3 _moveInDir;
 		protected Action _currentState;
 		protected Action _moveInState;
+		protected Action _moveOutState;
 
 		public int FaceDir { get; protected set; } = 0;
 	   
@@ -34,6 +35,7 @@ namespace FromAPikarmy
 		public virtual void Init()
 		{
 			_moveInState = OnMoveIn;
+			_moveOutState = OnMoveOut;
 		}
 
 		public void UpdateBehavior()
@@ -49,8 +51,10 @@ namespace FromAPikarmy
 
 		public void SetEnd()
 		{
-			_currentState = null;
+			_scrolling = true;
+			_currentState = _moveOutState;
 			CanBeEaten = false;
+			FaceDir = -1;
 		}
 
 		public void SetMoveIn(Donut.SpawnLocation spawnLocation, Vector3 position)
@@ -61,7 +65,7 @@ namespace FromAPikarmy
 			_scrolling = false;
 			CanBeEaten = true;
 
-			int dirX = (spawnLocation == Donut.SpawnLocation.Forward) ? -1 : 1;
+            int dirX = (spawnLocation == Donut.SpawnLocation.Forward) ? -1 : 1;
 			FaceDir = dirX;
 			float dirY = UnityEngine.Random.Range(-1, 1);
 			_moveInDir = new Vector2(dirX, dirY).normalized;
@@ -91,5 +95,10 @@ namespace FromAPikarmy
 				EndMoveIn();
 			}
 		}
+
+		private void OnMoveOut()
+		{
+			_position += _moveSpeed * DeltaTime * Vector3.left;
+        }
 	}
 }
