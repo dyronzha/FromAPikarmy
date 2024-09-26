@@ -51,15 +51,6 @@ namespace FromAPikarmy
 						_frameEatenValue += donut.EatenValue;
 						return true;
 					}
-
-					//var diff = dash.Point2 - dash.Point1;
-					//Ray ray = new Ray(dash.Point1, diff.normalized);
-					//if (eatenArea.IntersectRay(ray, out float distance) && distance * distance <= diff.sqrMagnitude)
-					//{
-					//	_frameEatenCount++;
-					//	_frameEatenValue += donut.EatenValue;
-					//	return true;
-					//}
 				}
 				return false;
 			}
