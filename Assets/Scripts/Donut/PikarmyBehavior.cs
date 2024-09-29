@@ -30,7 +30,6 @@ namespace FromAPikarmy
         }
         protected override void EndMoveIn()
         {
-            _scrolling = true;
             StartCalling();
         }
 

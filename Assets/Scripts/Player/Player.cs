@@ -60,8 +60,6 @@ namespace FromAPikarmy
 			for (int i = 0; i < length; i++)
 			{
 				var target = targetBox[i];
-				
-
 				var vector = target - Point1;
 				float dist = vector.GetProjectLengthOnAxis(normal);
 				if (dist <= _checkDistance)
@@ -97,7 +95,7 @@ namespace FromAPikarmy
 		[SerializeField] private DashEffectManager _dashEffectManager;
 		[SerializeField] private DenkiManager _denkiManager;
 		[SerializeField] private SpecialMoveModule _specialMoveModule;
-        [SerializeField] private GameObject _byebye;
+		[SerializeField] private GameObject _byebye;
 
 		private int _waitUpdateDashCounter = 3;
 		private int _lastDashHintCount;
@@ -136,6 +134,7 @@ namespace FromAPikarmy
 		public void SetEnd()
 		{
 			_currentState = _endState;
+			_specialMoveModule.ForceEnd();
 		}
 
 		public void SetLeave()
@@ -200,7 +199,7 @@ namespace FromAPikarmy
 				Move();
 				Shoot();
 				TriggerSpecialMove();
-            }
+			}
 		}
 
 		private bool DoingDash()

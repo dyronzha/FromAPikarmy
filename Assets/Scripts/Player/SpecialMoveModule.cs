@@ -48,6 +48,11 @@ namespace FromAPikarmy
 			_pikarmyManager.enabled = true;
         }
 
+		public void ForceEnd()
+		{
+			Lock();
+        }
+
 		private void Update()
 		{
 			if (InSpecial)
