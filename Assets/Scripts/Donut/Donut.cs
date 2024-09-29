@@ -33,7 +33,7 @@ namespace FromAPikarmy
 
 		public void Init(DonutManager donutManager)
 		{
-			_eatenArea = new Bounds(_collider.bounds.center, _collider.bounds.size) ;
+			_eatenArea = new Bounds(_collider.bounds.center, _collider.size);
 			_eatenAreaVertics[0] = _eatenArea.min;
 			_eatenAreaVertics[2] = _eatenArea.max;
 			_eatenAreaVertics[1] = new Vector2(_eatenAreaVertics[0].x, _eatenAreaVertics[2].y);
@@ -62,6 +62,7 @@ namespace FromAPikarmy
 			var startPosY = UnityEngine.Random.Range(BoundaryManager.Instance.MinPoint.y, BoundaryManager.Instance.MaxPoint.y);
 			_position.Set(startPosX, startPosY, Position.z);
 			_behavior.SetMoveIn(_spawnLocationType, _position);
+			UpdateTransform();
 		}
 
 		private void Update()
@@ -70,13 +71,10 @@ namespace FromAPikarmy
 			{
 				return;
 			}
-			if (OnScrolling())
+			_behavior.UpdateBehavior();
+			if (OnScrolling() && _behavior.CanBeEaten)
 			{
-				_behavior.UpdateBehavior();
-				if (_behavior.CanBeEaten)
-				{
-					DetectEaten();
-				}
+				DetectEaten();
 			}
 			UpdateTransform();
 		}
@@ -91,7 +89,7 @@ namespace FromAPikarmy
 
 		private bool OnScrolling()
 		{
-			if (_behavior.OnScroll() && BoundaryManager.Instance.CheckScrollingOut(_position.x))
+			if (_behavior.OnScroll() && BoundaryManager.Instance.CheckScrollingOut(_behavior.Position.x))
 			{
 				_donutManager.CleanDonut(this);
 				return false;
@@ -110,7 +108,7 @@ namespace FromAPikarmy
 				_spriteTransform.localScale = scale;
 			}
 			transform.position = _position;
-			
+
 			if (_behavior.CanBeEaten)
 			{
 				Vector2 min = new Vector2(_position.x - _eatenArea.extents.x, _position.y - _eatenArea.extents.y);
