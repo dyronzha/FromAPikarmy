@@ -45,16 +45,25 @@ namespace FromAPikarmy
 
 		public void SetEaten()
 		{
+			_scrolling = true;
+			CanBeEaten = false;
+			_currentState = null;
 			PlayEatenAni();
-			SetEnd();
 		}
 
 		public void SetEnd()
 		{
 			_scrolling = true;
-			_currentState = _moveOutState;
-			CanBeEaten = false;
-			FaceDir = -1;
+			if (CanBeEaten)
+			{
+				CanBeEaten = false;
+				FaceDir = -1;
+				_currentState = _moveOutState;
+			}
+			else
+			{
+				_currentState = null;
+			}	
 		}
 
 		public void SetMoveIn(Donut.SpawnLocation spawnLocation, Vector3 position)
@@ -65,7 +74,7 @@ namespace FromAPikarmy
 			_scrolling = false;
 			CanBeEaten = true;
 
-            int dirX = (spawnLocation == Donut.SpawnLocation.Forward) ? -1 : 1;
+			int dirX = (spawnLocation == Donut.SpawnLocation.Forward) ? -1 : 1;
 			FaceDir = dirX;
 			float dirY = UnityEngine.Random.Range(-1, 1);
 			_moveInDir = new Vector2(dirX, dirY).normalized;
@@ -99,6 +108,6 @@ namespace FromAPikarmy
 		private void OnMoveOut()
 		{
 			_position += _moveSpeed * DeltaTime * Vector3.left;
-        }
+		}
 	}
 }

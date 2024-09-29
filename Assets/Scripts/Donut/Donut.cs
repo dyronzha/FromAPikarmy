@@ -13,6 +13,7 @@ namespace FromAPikarmy
 		}	
 
 		[SerializeField] private int _eatenValue = 1;
+		[SerializeField] private int _eatenEnergy = 1;
 		[SerializeField] private SpawnLocation _spawnLocationType = SpawnLocation.Forward;
 		[SerializeField] private float _startOffset;
 		[SerializeField] private DonutBehavior _behavior;
@@ -27,6 +28,7 @@ namespace FromAPikarmy
 		private DonutManager _donutManager;
 
 		public int EatenValue => _eatenValue;
+		public int EatenEnergy => _eatenEnergy;
 		public Vector3 Position => _position;
 		public Vector2[] EatenAreaVertics => _eatenAreaVertics;
 		public Bounds EatenArea => _eatenArea;

@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _eatenValue: 1
+  _eatenEnergy: 0
   _spawnLocationType: 1
   _startOffset: 4
   _behavior: {fileID: -6944742437507273076}

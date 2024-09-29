@@ -55,6 +55,12 @@ namespace FromAPikarmy
 			_uiManager.OnEndScroll += EndScroll;
 		}
 
+		private void Start()
+		{
+			_donutManager.StartSpawn();
+			_reeseManager.StartSpawn();
+		}
+
 		private void OnDestroy()
 		{
 			_instance = null;

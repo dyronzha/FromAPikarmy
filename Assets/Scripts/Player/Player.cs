@@ -83,6 +83,7 @@ namespace FromAPikarmy
 		{
 			public int Count;
 			public int Value;
+			public int Energy;
 		}
 
 		[SerializeField] private float _moveSpeed;
@@ -121,14 +122,14 @@ namespace FromAPikarmy
 
 		private float DeltaTime => Time.deltaTime;
 
-		public void EatDonut(int eatCount, int eatValue)
+		public void EatDonut(int eatCount, int eatValue, int energy)
 		{
 			AudioManager.Instance.PlaySFX(3);
 			_animationModule.PlayEat();
 			_eatData.Count = eatCount;
 			_eatData.Value = eatValue;
 			_denkiManager.AddDenki(_eatData);
-			_specialMoveModule.AddEnergy(_eatData);
+			_specialMoveModule.AddEnergy(energy);
 		}
 
 		public void SetEnd()

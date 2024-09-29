@@ -361,7 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02097517405c5498e49933177019ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxEnergy: 5
+  _maxEnergy: 20
   _inSpecialTime: 10
   _energyBarFillTransform: {fileID: 173595914362885577}
   _animationModule: {fileID: 591161133978858912}

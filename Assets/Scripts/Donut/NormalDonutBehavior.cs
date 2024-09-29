@@ -9,7 +9,7 @@ namespace FromAPikarmy
 		[SerializeField] private Vector2 _idleRangetime;
 		[SerializeField] private Vector2 _rambleRangeTime;
 		[SerializeField] private Vector2 _rambleChangeDirRangeTime;
-        [SerializeField] private DonutAnimationModule _animationModule;
+		[SerializeField] private DonutAnimationModule _animationModule;
 
 		private float _idleTime;
 		private float _rambleTime;
@@ -29,39 +29,39 @@ namespace FromAPikarmy
 			_animationModule.Init();
 		}
 
-        protected override void PlayRunAni()
-        {
+		protected override void PlayRunAni()
+		{
 			_animationModule.PlayRun();
-        }
+		}
 
-        protected override void PlayEatenAni()
-        {
+		protected override void PlayEatenAni()
+		{
 			_animationModule.PlayEaten();
-        }
+		}
 
-        protected override void EndMoveIn()
+		protected override void EndMoveIn()
 		{
 			_scrolling = true;
 			RandomIdleRamble();
 		}
 
-        private void RandomIdleRamble()
-        {
-            var opp = UnityEngine.Random.Range(0, 10);
-            if (opp <= _rambleOpportunity)
-            {
-                SetRamble();
-            }
-            else
-            {
-                SetIdle();
-            }
-        }
-
-        private void SetIdle()
+		private void RandomIdleRamble()
 		{
-            CanBeEaten = true;
-            _stateTimer = 0;
+			var opp = UnityEngine.Random.Range(0, 10);
+			if (opp <= _rambleOpportunity)
+			{
+				SetRamble();
+			}
+			else
+			{
+				SetIdle();
+			}
+		}
+
+		private void SetIdle()
+		{
+			CanBeEaten = true;
+			_stateTimer = 0;
 			_currentState = _idleState;
 			_idleTime = UnityEngine.Random.Range(_idleRangetime.x, _idleRangetime.y);
 			_animationModule.PlayIdle();
@@ -74,17 +74,17 @@ namespace FromAPikarmy
 			{
 				RandomIdleRamble();
 			}
-        }
+		}
 
 		private void SetRamble()
 		{
-            CanBeEaten = true;
-            _stateTimer = 0;
+			CanBeEaten = true;
+			_stateTimer = 0;
 			_currentState = _rambleState;
 			_rambleTime = UnityEngine.Random.Range(_rambleRangeTime.x, _rambleRangeTime.y);
 			_rambleChangeDirTime = UnityEngine.Random.Range(_rambleChangeDirRangeTime.x, _rambleChangeDirRangeTime.y);
-            _lastRambleDir = _moveInDir;
-            _rambleDir = RandomDir();
+			_lastRambleDir = _moveInDir;
+			_rambleDir = RandomDir();
 			_animationModule.PlayRun();
 		}
 

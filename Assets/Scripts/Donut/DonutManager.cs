@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,11 +16,13 @@ namespace FromAPikarmy
 
 		private int _frameEatenCount;
 		private int _frameEatenValue;
+		private int _frameEatenEnergy;
 		private float _spawnTimer;
 		private float _spawnGapTimer;
 		private float _spawnTime;
 		private float _spawnGapTime;
 		private int _waitingDonutsAmount;
+		private Coroutine _detectRemain = null;
 
 		private Stack<Donut> _donutPool = new Stack<Donut>();
 		
@@ -39,7 +42,8 @@ namespace FromAPikarmy
 			{
 				_frameEatenCount++;
 				_frameEatenValue += donut.EatenValue;
-				return true;
+                _frameEatenEnergy += donut.EatenEnergy;
+                return true;
 			}
 			else
 			{
@@ -49,6 +53,7 @@ namespace FromAPikarmy
 					{
 						_frameEatenCount++;
 						_frameEatenValue += donut.EatenValue;
+						_frameEatenEnergy += donut.EatenEnergy;
 						return true;
 					}
 				}
@@ -56,9 +61,29 @@ namespace FromAPikarmy
 			}
 		}
 
+		public void StartSpawn()
+		{
+			enabled = true;
+        }
+
+		public void StopSpawn()
+		{
+            enabled = false;
+            _spawnTimer = 0;
+            _spawnGapTimer = 0;
+            if (_usedDonuts.Count > 0)
+			{
+                _detectRemain = StartCoroutine(DetectRemainAfterStopSpawn());
+			}
+        }
+
 		public void SetEnd()
 		{
-			foreach (var donut in _usedDonuts)
+			if (_detectRemain != null)
+			{
+				StopCoroutine(_detectRemain);
+			}
+            foreach (var donut in _usedDonuts)
 			{
 				donut.SetEnd();
 			}
@@ -109,12 +134,17 @@ namespace FromAPikarmy
 
 		private void LateUpdate()
 		{
-			if (_frameEatenCount > 0)
-			{
-				_player.EatDonut(_frameEatenCount, _frameEatenValue);
-				_frameEatenCount = _frameEatenValue = 0;
-			}
-		}
+			CheckEatDonut();
+        }
+
+		private void CheckEatDonut()
+		{
+            if (_frameEatenCount > 0)
+            {
+                _player.EatDonut(_frameEatenCount, _frameEatenValue, _frameEatenEnergy);
+                _frameEatenCount = _frameEatenValue = _frameEatenEnergy = 0;
+            }
+        }
 
 		private Donut SpawnDonut()
 		{
@@ -139,6 +169,15 @@ namespace FromAPikarmy
 			donut.Reset();
 			donut.transform.position = _spawnPosition;
 			donut.gameObject.SetActive(false);
+		}
+
+		private IEnumerator DetectRemainAfterStopSpawn()
+		{
+			while (_usedDonuts.Count > 0)
+			{
+                CheckEatDonut();
+                yield return null;
+			}
 		}
 	}
 }
