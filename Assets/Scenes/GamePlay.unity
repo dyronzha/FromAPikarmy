@@ -4291,7 +4291,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -2.2775397}
+  m_Offset: {x: 0, y: -2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -4302,7 +4302,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 30.498116, y: 10.700355}
+  m_Size: {x: 30.498116, y: 10.34}
   m_EdgeRadius: 0
 --- !u!1 &997713696
 GameObject:
@@ -5368,7 +5368,7 @@ MonoBehaviour:
   _maxPerSpawmCount: 4
   _maxImmediatelySpawmCount: 2
   _spawnRangeTime: {x: 1, y: 1.6}
-  _spawnGapRangeTime: {x: 0.1, y: 0.5}
+  _spawnGapRangeTime: {x: 0.3, y: 0.5}
   _spawnPosition: {x: 20, y: 0, z: 0}
   _donutPrefab: {fileID: 703108651}
   _player: {fileID: 1153096225}
